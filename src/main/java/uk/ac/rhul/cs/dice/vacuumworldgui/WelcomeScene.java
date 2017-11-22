@@ -2,6 +2,8 @@ package uk.ac.rhul.cs.dice.vacuumworldgui;
 
 import java.util.Optional;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
@@ -44,6 +46,7 @@ public class WelcomeScene extends Scene {
 	    return Optional.of((Pane) getRoot());
 	}
 	catch(ClassCastException e) {
+	    LogUtils.fakeLog(e);
 	    return Optional.empty();
 	}
     }
