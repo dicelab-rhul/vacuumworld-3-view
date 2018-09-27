@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONObject;
 
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWMessageCodes;
@@ -20,12 +21,16 @@ public class VWControllerManager {
     private VacuumWorldMessage latest;
 
     public VWControllerManager(String controllerIp, int controllerPort) {
+	LogUtils.log("View here: attempting to connect to the controller at " + controllerIp + ":" + controllerPort + ".");
+	
 	try {
 	    this.socketWithController = new Socket(controllerIp, controllerPort);
 	    this.to = this.socketWithController.getOutputStream();
 	    this.from = this.socketWithController.getInputStream();
 	    this.toController = new ObjectOutputStream(this.to);
 	    this.fromController = new ObjectInputStream(this.from);
+	    
+	    LogUtils.log("View here: connected to the controller at " + controllerIp + ":" + controllerPort + ".");
 	}
 	catch (Exception e) {
 	    throw new RuntimeException(e);
@@ -37,10 +42,14 @@ public class VWControllerManager {
     }
     
     public void setupNetwork() {
+	LogUtils.log("View here: initiating handshake with the controller...");
+	
 	sendHVC();
 	parseHCV();
 	sendHVM();
 	parseHMV();
+	
+	LogUtils.log("View here: handshake completed!");
     }
     
     private void parseHCV() {
@@ -56,6 +65,9 @@ public class VWControllerManager {
 	
 	if(!expected.equals(receivedCode)) {
 	    throw new IllegalArgumentException("Expected" + expected + ", got " + receivedCode + " instead.");
+	}
+	else {
+	    LogUtils.log("View here: received " + receivedCode + " from the controller.");
 	}
     }
 
@@ -80,10 +92,12 @@ public class VWControllerManager {
 	this.latest = receiveMessage();
     }
 
-    private void sendMessage(VacuumWorldMessage hvc) {
+    private void sendMessage(VacuumWorldMessage message) {
+	LogUtils.log("View here: sending " + message.getCode() + " to the controller...");
+	
 	try {
 	    this.toController.reset();
-	    this.toController.writeObject(hvc);
+	    this.toController.writeObject(message);
 	    this.toController.flush();
 	}
 	catch (Exception e) {

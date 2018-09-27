@@ -1,10 +1,17 @@
 package uk.ac.rhul.cs.dice.vacuumworldgui;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
+import uk.ac.rhul.cs.dice.vacuumworldgui.communication.VWControllerManager;
+
 public class Main {
 
     private Main() {}
 
     public static void main(String[] args) {
-	WelcomeWindow w1 = new WelcomeWindow();
+	LogUtils.log("The GUI is running.");
+	//WelcomeWindow w1 = new WelcomeWindow();
+	VWControllerManager manager = new VWControllerManager("127.0.0.1", 13337);
+	manager.setupNetwork();
     }
 }
