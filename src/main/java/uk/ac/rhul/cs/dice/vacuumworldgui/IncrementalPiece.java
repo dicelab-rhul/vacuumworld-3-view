@@ -114,12 +114,20 @@ public class IncrementalPiece {
 	this.sensors.add(Arrays.asList(id, purpose));
     }
     
+    public void addSensor(List<String> characteristics) {
+	this.sensors.add(characteristics);
+    }
+    
     public void addActuator(String purpose) {
 	this.actuators.add(Arrays.asList("Actuator-" + UUID.randomUUID(), purpose));
     }
     
     public void addActuator(String id, String purpose) {
 	this.actuators.add(Arrays.asList(id, purpose));
+    }
+    
+    public void addActuator(List<String> characteristics) {
+	this.actuators.add(characteristics);
     }
     
     public void setImgPath(String imgPath) {
@@ -158,13 +166,13 @@ public class IncrementalPiece {
 
     private JSONObject serializeActor(String prefix) {
 	JSONObject agent = new JSONObject();
-	agent.append("type", this.type);
-	agent.append("id", prefix + UUID.randomUUID());
-	agent.append("color", this.color);
-	agent.append("orientation", this.orientation);
-	agent.append("mind", this.mind);
-	agent.append("sensors", serializeSensors());
-	agent.append("actuators", serializeActuators());
+	agent.put("type", this.type);
+	agent.put("id", prefix + UUID.randomUUID());
+	agent.put("color", this.color == null ? JSONObject.NULL : this.color);
+	agent.put("orientation", this.orientation);
+	agent.put("mind", this.mind);
+	agent.put("sensors", serializeSensors());
+	agent.put("actuators", serializeActuators());
 	
 	return agent;
     }

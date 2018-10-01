@@ -17,6 +17,14 @@ public class IncrementalLocation {
 	return this.c;
     }
     
+    public void setP1(IncrementalPiece p1) {
+	this.p1 = p1;
+    }
+    
+    public void setP2(IncrementalPiece p2) {
+	this.p2 = p2;
+    }
+    
     public IncrementalPiece getP1() {
 	return this.p1;
     }
