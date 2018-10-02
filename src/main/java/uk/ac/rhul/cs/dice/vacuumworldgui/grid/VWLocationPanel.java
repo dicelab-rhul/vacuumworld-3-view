@@ -9,6 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
+import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWToggleLocationListener;
 
 public class VWLocationPanel {
@@ -16,7 +18,9 @@ public class VWLocationPanel {
     private GridBagConstraints constraints;
     private Component parent;
     
-    public VWLocationPanel(Component parent, String filePath, int x, int y) {
+    public VWLocationPanel(Component parent, VWState state, String filePath, int x, int y) {
+	Coordinates coordinates = new Coordinates(x, y);
+	
 	this.locationPanel = new JPanel();
 	this.locationPanel.setLayout(new GridLayout());
 	this.parent = parent;
@@ -28,7 +32,7 @@ public class VWLocationPanel {
 	
 	JLabel label = new JLabel();
 	label.setIcon(new ImageIcon(filePath));
-	label.addMouseListener(new VWToggleLocationListener(this.parent));
+	label.addMouseListener(new VWToggleLocationListener(this.parent, state, coordinates));
 	
 	this.locationPanel.add(label);
     }

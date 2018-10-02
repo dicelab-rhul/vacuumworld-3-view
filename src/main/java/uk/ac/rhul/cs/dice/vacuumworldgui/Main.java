@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 	LogUtils.log("The GUI is running.");
-	WelcomeWindow w1 = new WelcomeWindow();
+	VWWelcomeWindow w1 = new VWWelcomeWindow();
 	//VWControllerManager manager = new VWControllerManager("127.0.0.1", 13337);
 	//manager.setupNetwork();
     }

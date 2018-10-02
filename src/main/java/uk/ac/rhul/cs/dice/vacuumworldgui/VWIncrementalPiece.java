@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class IncrementalPiece {
+public class VWIncrementalPiece {
     private String id;
     private String type;
     private String color;
@@ -19,7 +19,7 @@ public class IncrementalPiece {
     private String imgPath;
     
     
-    public IncrementalPiece() {
+    public VWIncrementalPiece() {
 	this.id = null;
 	this.type = "blank";
 	this.color = null;

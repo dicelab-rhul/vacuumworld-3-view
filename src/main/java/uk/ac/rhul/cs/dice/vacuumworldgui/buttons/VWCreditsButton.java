@@ -14,6 +14,6 @@ public class VWCreditsButton extends VWAbstractButton {
     public void createButton() {
         super.createButton();
         
-        this.constraints.gridy = 2;
+        this.constraints.gridy = 3;
     }
 }

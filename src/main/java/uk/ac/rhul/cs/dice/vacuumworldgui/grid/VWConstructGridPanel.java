@@ -1,35 +1,43 @@
 package uk.ac.rhul.cs.dice.vacuumworldgui.grid;
 
 import java.awt.Component;
-import java.awt.GridBagLayout;
 
-import javax.swing.JPanel;
+import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 
 public class VWConstructGridPanel extends VWAbstractGridPanel {
-    private JPanel grid;
-    private Component parent;
     
-    public VWConstructGridPanel(Component parent) {
-	this.parent = parent;
+    public VWConstructGridPanel(Component parent, int gridSize) {
+	super(parent, gridSize);
 	
-	GridBagLayout layout = new GridBagLayout();
+	getState().setCallback(this);
 	
-	this.grid = new JPanel(layout);
-	
-	for(int i = 0; i < 5; i++) {
-	    for(int j = 0; j < 5; j++) {
-		VWLocationPanel panel = new VWLocationPanel(this.parent, "res/imgs/locations/white_square.png", i, j);
+	for(int i = 0; i < getGridSize(); i++) {
+	    for(int j = 0; j < getGridSize(); j++) {
+		Coordinates coordinates = new Coordinates(i, j);
+		getState().addEmptyLocationFromView(coordinates);
+		VWLocationPanel panel = new VWLocationPanel(getParent(), getState(), "res/imgs/locations/white_square.png", i, j);
 		
-		this.grid.add(panel.getLocationPanel(), panel.getConstraints());
+		getGrid().add(panel.getLocationPanel(), panel.getConstraints());
 	    }
 	}
 	
-	this.grid.repaint();
-	this.grid.revalidate();
-	this.grid.setVisible(true);
+	displayGrid();
     }
     
-    public JPanel getGrid() {
-	return this.grid;
+    public void update() {	
+	getGrid().removeAll();
+	
+	for(int i = 0; i < getGridSize(); i++) {
+	    for(int j = 0; j < getGridSize(); j++) {
+		Coordinates coordinates = new Coordinates(i, j);
+		String img = getState().getLocations().get(coordinates).getP1().getImgPath();
+		VWLocationPanel panel = new VWLocationPanel(getParent(), getState(), img, i, j);
+		
+		getGrid().add(panel.getLocationPanel(), panel.getConstraints());
+	    }
+	}
+	
+	displayGrid();
+	refreshParent();
     }
 }

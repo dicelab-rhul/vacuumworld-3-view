@@ -1,11 +1,11 @@
 package uk.ac.rhul.cs.dice.vacuumworldgui;
 
-public class IncrementalLocation {
+public class VWIncrementalLocation {
     private Coordinates c;
-    private IncrementalPiece p1;
-    private IncrementalPiece p2;
+    private VWIncrementalPiece p1;
+    private VWIncrementalPiece p2;
     
-    public IncrementalLocation(Coordinates c, IncrementalPiece p1, IncrementalPiece p2) {
+    public VWIncrementalLocation(Coordinates c, VWIncrementalPiece p1, VWIncrementalPiece p2) {
 	this.c = c;
 	this.p1 = p1;
 	this.p2 = p2;
@@ -17,19 +17,19 @@ public class IncrementalLocation {
 	return this.c;
     }
     
-    public void setP1(IncrementalPiece p1) {
+    public void setP1(VWIncrementalPiece p1) {
 	this.p1 = p1;
     }
     
-    public void setP2(IncrementalPiece p2) {
+    public void setP2(VWIncrementalPiece p2) {
 	this.p2 = p2;
     }
     
-    public IncrementalPiece getP1() {
+    public VWIncrementalPiece getP1() {
 	return this.p1;
     }
     
-    public IncrementalPiece getP2() {
+    public VWIncrementalPiece getP2() {
 	return this.p2;
     }
     
@@ -39,6 +39,10 @@ public class IncrementalLocation {
     
     public boolean doesAnActorExist() {
 	return this.p1.isActor();
+    }
+    
+    public boolean doesADirtExist() {
+	return this.p1.isDirt() || this.p2.isDirt();
     }
     
     public boolean isLoneActor() {
@@ -65,13 +69,13 @@ public class IncrementalLocation {
 	}
     }
 
-    private void checkEmpty(IncrementalPiece p) {
+    private void checkEmpty(VWIncrementalPiece p) {
 	if(!p.isBlank()) {
 	    throw new IllegalArgumentException();
 	}
     }
 
-    private void checkNotActor(IncrementalPiece p) {
+    private void checkNotActor(VWIncrementalPiece p) {
 	if(p.isActor()) {
 	    throw new IllegalArgumentException();
 	}

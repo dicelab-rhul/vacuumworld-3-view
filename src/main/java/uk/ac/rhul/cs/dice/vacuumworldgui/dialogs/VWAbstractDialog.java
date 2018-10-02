@@ -14,7 +14,7 @@ public abstract class VWAbstractDialog implements VWDialog {
     
     public VWAbstractDialog(String title, Component parent, boolean modal, boolean resizable) {
 	this.parent = parent;
-	this.parent = parent;
+	this.title = title;
 	this.modal = modal;
 	this.resizable = resizable;
     }
@@ -33,6 +33,10 @@ public abstract class VWAbstractDialog implements VWDialog {
 	this.dialog.setLocationRelativeTo(this.parent);
 	this.dialog.validate();
 	this.dialog.setVisible(true);
+    }
+    
+    public JDialog getDialog() {
+	return this.dialog;
     }
     
     @Override

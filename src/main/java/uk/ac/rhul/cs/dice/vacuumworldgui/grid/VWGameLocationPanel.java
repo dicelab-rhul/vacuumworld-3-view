@@ -9,16 +9,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
-import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWSelectPieceListener;
 
-public class VWSelectionDialogLocationPanel {
+public class VWGameLocationPanel {
     private JPanel locationPanel;
     private GridBagConstraints constraints;
     private Component parent;
-    
-    public VWSelectionDialogLocationPanel(Component parent, VWState state, Coordinates coordinates, String filePath, int x, int y) {
+
+    public VWGameLocationPanel(Component parent, VWState state, String filePath, int x, int y) {
 	this.locationPanel = new JPanel();
 	this.locationPanel.setLayout(new GridLayout());
 	this.parent = parent;
@@ -30,9 +28,12 @@ public class VWSelectionDialogLocationPanel {
 	
 	JLabel label = new JLabel();
 	label.setIcon(new ImageIcon(filePath));
-	label.addMouseListener(new VWSelectPieceListener(this.parent, state, coordinates, filePath));
 	
 	this.locationPanel.add(label);
+    }
+    
+    public Component getParent() {
+	return this.parent;
     }
     
     public JPanel getLocationPanel() {

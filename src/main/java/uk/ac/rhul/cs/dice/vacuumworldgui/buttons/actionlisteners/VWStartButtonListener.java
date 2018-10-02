@@ -3,10 +3,12 @@ package uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import uk.ac.rhul.cs.dice.vacuumworldgui.ConstructGameWindow;
+import javax.swing.JFrame;
+
+import uk.ac.rhul.cs.dice.vacuumworldgui.VWConstructGameWindow;
 
 public class VWStartButtonListener extends VWAbstractButtonListener {
-
+    
     public VWStartButtonListener(Component parent) {
 	super(parent);
     }
@@ -20,8 +22,9 @@ public class VWStartButtonListener extends VWAbstractButtonListener {
     }
 
     private void createAndShowConstructGameWindow() {
-	ConstructGameWindow window = new ConstructGameWindow();
+	new VWConstructGameWindow();
 	getParent().setVisible(false);
 	getParent().invalidate();
+	((JFrame) getParent()).dispose();
     }
 }

@@ -28,7 +28,7 @@ public class ParserAndSerializerTest {
 	
 	String dirt14 = "res/imgs/locations/green_dirt.png";
 	
-	State state = State.getInstance(gridSize);
+	VWState state = VWState.getInstance(gridSize);
 	
 	for(int i = 0; i < gridSize; i++) {
 	    for(int j = 0; j < gridSize; j++) {
@@ -50,15 +50,15 @@ public class ParserAndSerializerTest {
 	
 	print(json);
 	
-	State.reset(json);
+	VWState.reset(json);
 	json = state.serializeState();
 	
 	print(json);
 	
 	state.saveState(path);
 	
-	State.reset();
-	state = State.getInstance(path);
+	VWState.reset();
+	state = VWState.getInstance(path);
 	json = state.serializeState();
 	
 	print(json);

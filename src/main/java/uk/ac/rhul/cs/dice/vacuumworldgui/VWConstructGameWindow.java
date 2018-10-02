@@ -3,15 +3,15 @@ package uk.ac.rhul.cs.dice.vacuumworldgui;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStartSimulationButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWConstructGridPanel;
 
-public class ConstructGameWindow {
+public class VWConstructGameWindow {
     private JFrame window;
     private BorderLayout layout;
     
-    public ConstructGameWindow() {
+    public VWConstructGameWindow() {
 	buildWindow();
     }
 
@@ -23,19 +23,20 @@ public class ConstructGameWindow {
 	
 	this.window.setLayout(this.layout);
 	
-	VWConstructGridPanel grid = new VWConstructGridPanel(this.window);
+	VWConstructGridPanel grid = new VWConstructGridPanel(this.window, VWGameProperties.getInstance().getGridSize());
 	
-	this.window.add(new JLabel("Test1"), BorderLayout.NORTH);
-	this.window.add(new JLabel("Test2"), BorderLayout.SOUTH);
-	this.window.add(new JLabel("Test3"), BorderLayout.EAST);
+	VWStartSimulationButton b = new VWStartSimulationButton(this.window, grid.getState());
+	b.createButton();
+	
+	this.window.add(b.getButton(), BorderLayout.SOUTH);
 	this.window.add(grid.getGrid(), BorderLayout.WEST);
-	this.window.add(new JLabel("Test5"), BorderLayout.CENTER);
 	
 	this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	this.window.pack();
 	this.window.repaint();
 	this.window.revalidate();
+	this.window.setLocationRelativeTo(null);
 	this.window.setVisible(true);
     }
 }

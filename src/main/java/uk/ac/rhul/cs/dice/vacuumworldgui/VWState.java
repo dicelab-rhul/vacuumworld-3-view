@@ -16,67 +16,97 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class State {
-    private static State instance;
+import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWConstructGridPanel;
+
+public class VWState {
+    private static VWState instance;
     private int size;
-    private Map<Coordinates, IncrementalLocation> locations;
+    private Map<Coordinates, VWIncrementalLocation> locations;
+    private VWConstructGridPanel callback;
+    private int numberOfActors;
     
     //constructor "from view for model through controller.".
-    private State(int size) {
+    private VWState(int size) {
 	this.locations = new HashMap<>();
 	this.size = size;
+	this.numberOfActors = 0;
     }
     
     //constructor "from model through controller for view".
-    private State(JSONObject state) {
+    private VWState(JSONObject state) {
 	this.locations = new HashMap<>();
+	this.numberOfActors = 0;
 	
 	extractSize(state);
 	deserialize(state);
     }
     
-    public static State getInstance(int size) {
-	if(State.instance == null) {
-	    State.instance = new State(size);
+    public static VWState getInstance(int size) {
+	if(VWState.instance == null) {
+	    VWState.instance = new VWState(size);
 	}
 	
-	return State.instance;
+	return VWState.instance;
     }
     
-    public static State getInstance(JSONObject state) {
-	if(State.instance == null) {
-	    State.instance = new State(state);
+    public static VWState getInstance(JSONObject state) {
+	if(VWState.instance == null) {
+	    VWState.instance = new VWState(state);
 	}
 	
-	return State.instance;
+	return VWState.instance;
     }
     
-    public static State getInstance(String savestatePath) {
+    public static VWState getInstance(String savestatePath) {
 	try {
-	    if(State.instance == null) {
+	    if(VWState.instance == null) {
 		URI uri = new URI("file:./" + savestatePath);
 		JSONTokener tokener = new JSONTokener(uri.toURL().openStream());
 		JSONObject root = new JSONObject(tokener);
-		State.instance = new State(root);
+		VWState.instance = new VWState(root);
 	    }
 	    
-	    return State.instance;
+	    return VWState.instance;
 	}
 	catch(Exception e) {
 	    throw new IllegalArgumentException(e);
 	}
     }
     
+    public int getGridSize() {
+	return this.size;
+    }
+    
+    public int getNumberOfActors() {
+	return this.numberOfActors;
+    }
+    
+    public boolean areThereAnyActors() {
+	return this.numberOfActors > 0;
+    }
+    
+    public Map<Coordinates, VWIncrementalLocation> getLocations() {
+	return this.locations;
+    }
+    
+    public VWConstructGridPanel getCallback() {
+	return this.callback;
+    }
+    
+    public void setCallback(VWConstructGridPanel callback) {
+	this.callback = callback;
+    }
+    
     public static void reset(int size) {
-	State.instance = new State(size);
+	VWState.instance = new VWState(size);
     }
     
     public static void reset(JSONObject state) {
-	State.instance = new State(state);
+	VWState.instance = new VWState(state);
     }
     
     public static void reset() {
-	State.instance = null;
+	VWState.instance = null;
     }
     
     public void saveState(String path) {
@@ -93,17 +123,21 @@ public class State {
     }
     
     public void addEmptyLocationFromView(Coordinates coordinates) {
-	this.locations.put(coordinates, new IncrementalLocation(coordinates, new IncrementalPiece(), new IncrementalPiece()));
+	this.locations.put(coordinates, new VWIncrementalLocation(coordinates, new VWIncrementalPiece(), new VWIncrementalPiece()));
     }
     
     public void resetLocation(Coordinates coordinates) {
+	if(this.locations.get(coordinates).doesAnActorExist() && this.numberOfActors > 0) {
+	    this.numberOfActors--;
+	}
+	
 	addEmptyLocationFromView(coordinates);
     }
     
     public void addActorToEmptyLocationFromView(Coordinates coordinates, String imagePath, String mind) {
-	IncrementalLocation location = this.locations.get(coordinates);
+	VWIncrementalLocation location = this.locations.get(coordinates);
 	
-	IncrementalPiece actor = new IncrementalPiece();
+	VWIncrementalPiece actor = new VWIncrementalPiece();
 	
 	String[] tokens = imagePath.split("/");
 	String name = tokens[tokens.length - 1].split("\\.")[0];
@@ -121,12 +155,13 @@ public class State {
 	location.setP1(actor);
 	
 	this.locations.put(coordinates, location);
+	this.numberOfActors++;
     }
     
     public void addDirtToEmptyLocationFromView(Coordinates coordinates, String imagePath) {
-	IncrementalLocation location = this.locations.get(coordinates);
+	VWIncrementalLocation location = this.locations.get(coordinates);
 	
-	IncrementalPiece dirt = new IncrementalPiece();
+	VWIncrementalPiece dirt = new VWIncrementalPiece();
 	
 	dirt.setType("dirt");
 	dirt.setColor(getDirtColor(imagePath));
@@ -137,8 +172,8 @@ public class State {
     }
     
     public void addDirtToLocationWithActorFromView(Coordinates coordinates, String imagePath) {
-	IncrementalLocation location = this.locations.get(coordinates);
-	IncrementalPiece dirt = new IncrementalPiece();
+	VWIncrementalLocation location = this.locations.get(coordinates);
+	VWIncrementalPiece dirt = new VWIncrementalPiece();
 	
 	dirt.setType("dirt");
 	dirt.setColor(getDirtColor(imagePath));
@@ -155,9 +190,9 @@ public class State {
     }
 
     public void addActorToLocationWithDirtFromView(Coordinates coordinates, String imagePath, String mind) {
-	IncrementalLocation location = this.locations.get(coordinates);
-	IncrementalPiece dirt = location.getP2();
-	IncrementalPiece actor = new IncrementalPiece();
+	VWIncrementalLocation location = this.locations.get(coordinates);
+	VWIncrementalPiece dirt = location.getP2();
+	VWIncrementalPiece actor = new VWIncrementalPiece();
 	
 	String[] tokens = imagePath.split("/");
 	String name = tokens[tokens.length - 1].split("\\.")[0];
@@ -176,6 +211,7 @@ public class State {
 	location.setP2(dirt);
 	
 	this.locations.put(coordinates, location);
+	this.numberOfActors++;
     }
     
     private String getType(String name) {
@@ -301,7 +337,7 @@ public class State {
 	}
     }
 
-    private IncrementalLocation deserializeLocationHelper(JSONObject location, Coordinates coordinates) {
+    private VWIncrementalLocation deserializeLocationHelper(JSONObject location, Coordinates coordinates) {
 	if(location.has("actor") && location.has("dirt")) {
 	    return createLocationWithActorAndDirt(location, coordinates);
 	}
@@ -316,20 +352,20 @@ public class State {
 	}
     }
 
-    private IncrementalLocation createLocationWithActorAndDirt(JSONObject location, Coordinates coordinates) {
-	IncrementalPiece actor = createActor(location.getJSONObject("actor"));
-	IncrementalPiece dirt = createDirt(location.getJSONObject("dirt"));
+    private VWIncrementalLocation createLocationWithActorAndDirt(JSONObject location, Coordinates coordinates) {
+	VWIncrementalPiece actor = createActor(location.getJSONObject("actor"));
+	VWIncrementalPiece dirt = createDirt(location.getJSONObject("dirt"));
 	
-	return new IncrementalLocation(coordinates, actor, dirt);
+	return new VWIncrementalLocation(coordinates, actor, dirt);
     }
 
-    private IncrementalLocation createLocationWithLoneActor(JSONObject location, Coordinates coordinates) {
-	IncrementalPiece actor = createActor(location.getJSONObject("actor"));
+    private VWIncrementalLocation createLocationWithLoneActor(JSONObject location, Coordinates coordinates) {
+	VWIncrementalPiece actor = createActor(location.getJSONObject("actor"));
 	
-	return new IncrementalLocation(coordinates, actor, new IncrementalPiece());
+	return new VWIncrementalLocation(coordinates, actor, new VWIncrementalPiece());
     }
 
-    private IncrementalPiece createActor(JSONObject a) {	
+    private VWIncrementalPiece createActor(JSONObject a) {	
 	String type = a.getString("type");
 	String id = a.getString("id");
 	String orientation = a.getString("orientation");
@@ -344,8 +380,8 @@ public class State {
 	return createActor(type, id, orientation, mind, col, sensors, actuators);
     }
 
-    private IncrementalPiece createActor(String type, String id, String orientation, String mind, String color, JSONArray sensors, JSONArray actuators) {
-	IncrementalPiece actor = new IncrementalPiece();
+    private VWIncrementalPiece createActor(String type, String id, String orientation, String mind, String color, JSONArray sensors, JSONArray actuators) {
+	VWIncrementalPiece actor = new VWIncrementalPiece();
 	
 	actor.setId(id);
 	actor.setColor(color);
@@ -413,14 +449,14 @@ public class State {
 	return builder.toString();
     }
 
-    private IncrementalLocation createLocationWithLoneDirt(JSONObject location, Coordinates coordinates) {
-	IncrementalPiece dirt = createDirt(location.getJSONObject("dirt"));
+    private VWIncrementalLocation createLocationWithLoneDirt(JSONObject location, Coordinates coordinates) {
+	VWIncrementalPiece dirt = createDirt(location.getJSONObject("dirt"));
 	
-	return new IncrementalLocation(coordinates, dirt, new IncrementalPiece());
+	return new VWIncrementalLocation(coordinates, dirt, new VWIncrementalPiece());
     }
 
-    private IncrementalPiece createDirt(JSONObject d) {
-	IncrementalPiece dirt = new IncrementalPiece();
+    private VWIncrementalPiece createDirt(JSONObject d) {
+	VWIncrementalPiece dirt = new VWIncrementalPiece();
 	
 	dirt.setType("dirt");
 	String color = d.getString("color"); //guaranteed to be a String for dirts.
@@ -436,7 +472,7 @@ public class State {
 		Coordinates coordinates = new Coordinates(i, j); //TODO check.
 		
 		if(!this.locations.containsKey(coordinates)) {
-		    this.locations.put(coordinates, new IncrementalLocation(coordinates, new IncrementalPiece(), new IncrementalPiece()));
+		    this.locations.put(coordinates, new VWIncrementalLocation(coordinates, new VWIncrementalPiece(), new VWIncrementalPiece()));
 		}
 	    }
 	}
@@ -455,7 +491,7 @@ public class State {
      * Note: in this case the location cannot be blank (otherwise this private method would not be called). Hence, the check is skipped.
      * 
      */
-    private JSONObject createLocation(IncrementalLocation loc) {
+    private JSONObject createLocation(VWIncrementalLocation loc) {
 	JSONObject location = new JSONObject();
 	
 	location.put("x", loc.getCoordinates().getX());

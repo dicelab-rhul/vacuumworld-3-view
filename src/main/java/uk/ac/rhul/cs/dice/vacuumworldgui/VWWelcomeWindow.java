@@ -10,14 +10,15 @@ import javax.swing.JPanel;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWCreditsButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWLoadButton;
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWOptionsButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStartButton;
 
-public class WelcomeWindow {
+public class VWWelcomeWindow {
     private JFrame welcomeWindowFrame;
     private static final int WIDTH = 500;
     private static final int HEIGHT = 545;
     
-    public WelcomeWindow() {
+    public VWWelcomeWindow() {
 	buildWelcomeWindow();
     }
 
@@ -36,18 +37,23 @@ public class WelcomeWindow {
 	VWLoadButton loadButton = new VWLoadButton(this.welcomeWindowFrame);
 	loadButton.createButton();
 	
+	VWOptionsButton optionsButton = new VWOptionsButton(this.welcomeWindowFrame);
+	optionsButton.createButton();
+	
 	VWCreditsButton creditsButton = new VWCreditsButton(this.welcomeWindowFrame);
 	creditsButton.createButton();
 	
 	welcomeLabel.setLayout(new GridBagLayout());
 	welcomeLabel.add(startButton.getButton(), startButton.getConstraints());
 	welcomeLabel.add(loadButton.getButton(), loadButton.getConstraints());
+	welcomeLabel.add(optionsButton.getButton(), optionsButton.getConstraints());
 	welcomeLabel.add(creditsButton.getButton(), creditsButton.getConstraints());
 	
 	welcomePanel.add(welcomeLabel);
 	
 	this.welcomeWindowFrame.add(welcomePanel);
 	this.welcomeWindowFrame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+	this.welcomeWindowFrame.setLocationRelativeTo(null);
 	this.welcomeWindowFrame.setVisible(true);
     }
 }
