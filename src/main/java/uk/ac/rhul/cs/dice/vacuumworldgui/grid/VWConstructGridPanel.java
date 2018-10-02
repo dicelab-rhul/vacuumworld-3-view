@@ -15,7 +15,7 @@ public class VWConstructGridPanel extends VWAbstractGridPanel {
 	    for(int j = 0; j < getGridSize(); j++) {
 		Coordinates coordinates = new Coordinates(i, j);
 		getState().addEmptyLocationFromView(coordinates);
-		VWLocationPanel panel = new VWLocationPanel(getParent(), getState(), "res/imgs/locations/white_square.png", i, j);
+		VWLocationPanel panel = new VWLocationPanel(getParent(), getState(), "/res/imgs/locations/white_square.png", i, j);
 		
 		getGrid().add(panel.getLocationPanel(), panel.getConstraints());
 	    }

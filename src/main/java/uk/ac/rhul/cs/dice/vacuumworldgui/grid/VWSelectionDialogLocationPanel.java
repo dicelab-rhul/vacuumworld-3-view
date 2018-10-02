@@ -5,11 +5,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
+import uk.ac.rhul.cs.dice.vacuumworldgui.Main;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWSelectPieceListener;
 
@@ -29,7 +33,14 @@ public class VWSelectionDialogLocationPanel {
 	this.constraints.insets = new Insets(0, 0, 0, 0);
 	
 	JLabel label = new JLabel();
-	label.setIcon(new ImageIcon(filePath));
+	
+	try {
+	    label.setIcon(new ImageIcon(ImageIO.read(Main.class.getResourceAsStream(filePath))));
+	}
+	catch(Exception e) {
+	    LogUtils.log(e);
+	}
+	
 	label.addMouseListener(new VWSelectPieceListener(this.parent, state, coordinates, filePath));
 	
 	this.locationPanel.add(label);

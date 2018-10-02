@@ -9,6 +9,7 @@ public class VWGameProperties {
     private static VWGameProperties instance;
     private int gridSize;
     private Set<String> minds;
+    private String userMind;
     private String defaultMind;
     private Map<String, String> assignedMinds;
     private static final int MIN_SIZE = 1;
@@ -78,6 +79,14 @@ public class VWGameProperties {
     
     public String getMind(String agentType) {
 	return this.assignedMinds.containsKey(agentType) ? this.assignedMinds.get(agentType) : this.defaultMind;
+    }
+    
+    public void setUserMind(String userMind) {
+	this.userMind = userMind;
+    }
+    
+    public String getUserMind() {
+	return this.userMind;
     }
     
     public static int getMaxSize() {

@@ -2,7 +2,9 @@ package uk.ac.rhul.cs.dice.vacuumworldgui;
 
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,18 +20,19 @@ public class VWWelcomeWindow {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 545;
     
-    public VWWelcomeWindow() {
+    public VWWelcomeWindow() throws IOException {
 	buildWelcomeWindow();
     }
 
-    private void buildWelcomeWindow() {
+    private void buildWelcomeWindow() throws IOException {
 	this.welcomeWindowFrame = new JFrame();
 	this.welcomeWindowFrame.setTitle("Welcome to VacuumWorld 3.0!");
 	this.welcomeWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	JPanel welcomePanel = new JPanel();
 	JLabel welcomeLabel = new JLabel();
-	welcomeLabel.setIcon(new ImageIcon("res/imgs/start_menu.png"));
+	
+	welcomeLabel.setIcon(new ImageIcon(ImageIO.read(Main.class.getResourceAsStream("/res/imgs/start_menu.png"))));
 	
 	VWStartButton startButton = new VWStartButton(this.welcomeWindowFrame);
 	startButton.createButton();

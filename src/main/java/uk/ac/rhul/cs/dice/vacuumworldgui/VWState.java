@@ -134,7 +134,7 @@ public class VWState {
 	addEmptyLocationFromView(coordinates);
     }
     
-    public void addActorToEmptyLocationFromView(Coordinates coordinates, String imagePath, String mind) {
+    public void addActorToEmptyLocationFromView(Coordinates coordinates, String imagePath) {
 	VWIncrementalLocation location = this.locations.get(coordinates);
 	
 	VWIncrementalPiece actor = new VWIncrementalPiece();
@@ -146,7 +146,7 @@ public class VWState {
 	actor.setId(generateActorId(name));
 	actor.setColor(getActorColor(name));
 	actor.setOrientation(getOrientation(name));
-	actor.setMind(mind);
+	actor.setMind(getMind(name));
 	actor.setImgPath(imagePath);
 	
 	generateNewSensors().forEach(actor::addSensor);
@@ -157,7 +157,31 @@ public class VWState {
 	this.locations.put(coordinates, location);
 	this.numberOfActors++;
     }
-    
+
+    private String getMind(String name) {
+	switch(getType(name)) {
+	case "user":
+	    return VWGameProperties.getInstance().getUserMind();
+	case "avatar":
+	    return "";
+	default:
+	    return getAgentMind(getActorColor(name));
+	}
+    }
+
+    private String getAgentMind(String color) {
+	switch(color) {
+	case "green":
+	    return VWGameProperties.getInstance().getMind("green");
+	case "orange":
+	    return VWGameProperties.getInstance().getMind("orange");
+	case "white":
+	    return VWGameProperties.getInstance().getMind("white");
+	default:
+	    return "";
+	}
+    }
+
     public void addDirtToEmptyLocationFromView(Coordinates coordinates, String imagePath) {
 	VWIncrementalLocation location = this.locations.get(coordinates);
 	
@@ -189,7 +213,7 @@ public class VWState {
 	return tokens[tokens.length - 1].split("\\.")[0].split("_")[0];
     }
 
-    public void addActorToLocationWithDirtFromView(Coordinates coordinates, String imagePath, String mind) {
+    public void addActorToLocationWithDirtFromView(Coordinates coordinates, String imagePath) {
 	VWIncrementalLocation location = this.locations.get(coordinates);
 	VWIncrementalPiece dirt = location.getP2();
 	VWIncrementalPiece actor = new VWIncrementalPiece();
@@ -201,7 +225,7 @@ public class VWState {
 	actor.setId(generateActorId(name));
 	actor.setColor(getActorColor(name));
 	actor.setOrientation(getOrientation(name));
-	actor.setMind(mind);
+	actor.setMind(getMind(name));
 	actor.setImgPath(imagePath);
 	
 	generateNewSensors().forEach(actor::addSensor);
@@ -426,7 +450,7 @@ public class VWState {
     }
 
     private String getImgPath(String type, String color, String orientation) {
-	StringBuilder builder = new StringBuilder("res/imgs/locations/");
+	StringBuilder builder = new StringBuilder("/res/imgs/locations/");
 	
 	switch(type) {
 	case "cleaning_agent":
@@ -461,7 +485,7 @@ public class VWState {
 	dirt.setType("dirt");
 	String color = d.getString("color"); //guaranteed to be a String for dirts.
 	dirt.setColor(color);
-	dirt.setImgPath("res/imgs/locations/" + color + "_dirt.png");
+	dirt.setImgPath("/res/imgs/locations/" + color + "_dirt.png");
 	
 	return dirt;
     }

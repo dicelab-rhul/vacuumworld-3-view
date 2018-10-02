@@ -82,10 +82,10 @@ public class VWSelectPieceListener implements MouseListener {
 	System.out.println("Adding an actor on location "  + this.coordinates + ".");
 	
 	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
-	    this.state.addActorToLocationWithDirtFromView(this.coordinates, this.imgPath, "pippo");
+	    this.state.addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
 	}
 	else {
-	    this.state.addActorToEmptyLocationFromView(this.coordinates, this.imgPath, "pippo");
+	    this.state.addActorToEmptyLocationFromView(this.coordinates, this.imgPath);
 	}
     }
 

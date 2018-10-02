@@ -27,7 +27,7 @@ public class VWIncrementalPiece {
 	this.mind = null;
 	this.sensors = new ArrayList<>();
 	this.actuators = new ArrayList<>();
-	this.imgPath = "res/imgs/locations/white_square.png";
+	this.imgPath = "/res/imgs/locations/white_square.png";
     }
     
     public boolean isBlank() {
