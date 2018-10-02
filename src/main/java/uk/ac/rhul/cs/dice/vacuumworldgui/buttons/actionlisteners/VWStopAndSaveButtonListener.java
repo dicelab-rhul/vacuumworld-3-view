@@ -18,9 +18,11 @@ public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-	System.out.println("Stopping the simulation");
+	System.out.println("Stopping the simulation...");
 	
 	saveState();
+	
+	System.out.println("Done.");
 	
 	getParent().setVisible(false);
 	getParent().invalidate();
@@ -28,8 +30,11 @@ public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
     }
     
     private void saveState() {
-	// TODO Auto-generated method stub
+	String name = System.currentTimeMillis() + ".json";
 	
+	System.out.println("Saving the current state to " + name + " ...");
+	
+	this.state.saveState(name);
     }
 
     public VWState getState() {
