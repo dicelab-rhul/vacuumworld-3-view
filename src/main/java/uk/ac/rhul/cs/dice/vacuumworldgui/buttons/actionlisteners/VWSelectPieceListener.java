@@ -22,9 +22,7 @@ public class VWSelectPieceListener implements MouseListener {
 	this.imgPath = imgPath;
     }
 
-    private void updateState() {
-	//this.state.addActorToEmptyLocationFromView(this.coordinates, this.imgPath, "pippo");
-	
+    private void updateState() {	
 	if(tryingToAddAnActor()) {
 	    System.out.println("Trying to an actor on location " + this.coordinates + "...");
 	    attemptToAddAnActor();
