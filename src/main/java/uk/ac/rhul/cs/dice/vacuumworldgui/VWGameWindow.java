@@ -29,7 +29,7 @@ public class VWGameWindow {
 	b.createButton();
 	
 	this.window.add(b.getButton(), BorderLayout.SOUTH);
-	this.window.add(grid.getGrid(), BorderLayout.WEST);
+	this.window.add(grid.getGrid(), BorderLayout.CENTER);
 	
 	this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
