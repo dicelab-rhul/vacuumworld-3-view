@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import uk.ac.rhul.cs.dice.vacuumworldgui.communication.VWControllerManager;
+
 public class VWGameProperties {
     private static VWGameProperties instance;
     private int gridSize;
@@ -15,6 +17,7 @@ public class VWGameProperties {
     private static final int MIN_SIZE = 1;
     private static final int MAX_SIZE = 10;
     private static final int DEFAULT_SIZE = 5;
+    private VWControllerManager manager;
     
     private VWGameProperties() {
 	this(0);
@@ -43,6 +46,14 @@ public class VWGameProperties {
 	}
 	
 	return VWGameProperties.instance;
+    }
+    
+    public void setManager(VWControllerManager manager) {
+	this.manager = manager;
+    }
+    
+    public VWControllerManager getManager() {
+	return this.manager;
     }
     
     private void setGridSize(int gridSize) {

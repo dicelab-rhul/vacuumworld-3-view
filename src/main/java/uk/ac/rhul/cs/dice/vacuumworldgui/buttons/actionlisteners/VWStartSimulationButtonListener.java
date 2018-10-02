@@ -5,11 +5,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
+import org.json.JSONObject;
+
+import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameWindow;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
     private VWState state;
+    private VWGameWindow gameWindow;
     
     public VWStartSimulationButtonListener(Component parent, VWState state) {
 	super(parent);
@@ -29,14 +33,30 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
     }
 
     private void startSimulation() {
-	new VWGameWindow(this.state, this.state.getGridSize());
+	this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
 	
 	getParent().setVisible(false);
 	getParent().invalidate();
 	((JFrame) getParent()).dispose();
 	
 	dumpInitialState();
+	
+	loop();
+    }
+
+    private void loop() {
 	sendStateToModel();
+	JSONObject state = waitForModel();
+	redrawGUI(state);
+    }
+
+    private void redrawGUI(JSONObject state) {
+	this.gameWindow.dispose();
+	this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
+    }
+
+    private JSONObject waitForModel() {
+	return VWGameProperties.getInstance().getManager().fetchUpdateFromModel();
     }
 
     private void dumpInitialState() {
@@ -44,7 +64,6 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
     }
 
     private void sendStateToModel() {
-	// TODO Auto-generated method stub
-	
+	VWGameProperties.getInstance().getManager().sendStateToModel(this.state.serializeState());
     }
 }

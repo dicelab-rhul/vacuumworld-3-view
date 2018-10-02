@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
+import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
@@ -17,10 +18,11 @@ public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent e) {
 	System.out.println("Stopping the simulation...");
 	
 	saveState();
+	VWGameProperties.getInstance().getManager().sendStopToModel();
 	
 	System.out.println("Done.");
 	

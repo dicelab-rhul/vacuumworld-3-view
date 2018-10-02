@@ -37,6 +37,33 @@ public class VWControllerManager {
 	}
     } 
 
+    public void sendAcknowledgementsToModel() {
+	VacuumWorldMessage message = new VacuumWorldMessage(VWMessageCodes.ACK_FROM_VIEW, null);
+	
+	sendMessage(message);
+    }
+    
+    public void sendStopToModel() {
+	VacuumWorldMessage message = new VacuumWorldMessage(VWMessageCodes.QUIT_FROM_VIEW, null);
+	
+	sendMessage(message);
+    }
+    
+    public void sendStateToModel(JSONObject state) {
+	VacuumWorldMessage message = new VacuumWorldMessage(VWMessageCodes.INIT_GAME_FROM_VIEW, state);
+	
+	sendMessage(message);
+    }
+    
+    public JSONObject fetchUpdateFromModel() {
+	try {
+	    return (JSONObject) this.fromController.readObject();
+	}
+	catch(Exception e) {
+	    throw new IllegalArgumentException(e);
+	}
+    }
+    
     public VacuumWorldMessage getLatestReceivedMessage() {
 	return this.latest;
     }

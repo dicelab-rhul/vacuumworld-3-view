@@ -39,4 +39,9 @@ public class VWGameWindow {
 	this.window.setLocationRelativeTo(null);
 	this.window.setVisible(true);
     }
+    
+    public void dispose() {
+	this.window.invalidate();
+	this.window.dispose();
+    }
 }

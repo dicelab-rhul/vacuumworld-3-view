@@ -9,12 +9,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import org.cloudstrife9999.logutilities.LogUtils;
+import org.json.JSONObject;
 
+import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameWindow;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWLoadButtonListener extends VWAbstractButtonListener {
     private JFileChooser loader;
+    private VWState state;
+    private VWGameWindow gameWindow;
     
     public VWLoadButtonListener(Component parent) {
 	super(parent);
@@ -46,16 +50,39 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
     private void attemptToLoadTheGame(File file) {
 	try {
 	    String path = file.getAbsolutePath();
-	    VWState state = VWState.getInstance(path);
+	    this.state = VWState.getInstance(path);
+	    
+	    System.out.println("Loaded " + path + ".");
 	    
 	    getParent().invalidate();
 	    ((JFrame) getParent()).dispose();
-	    new VWGameWindow(state, state.getGridSize());
+	    this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
+	    
+	    loop();
 	}
 	catch(Exception e) {
 	    LogUtils.fakeLog(e);
 	    System.out.println("Failed to load the state.");
 	}
+    }
+    
+    private void loop() {
+	sendStateToModel();
+	JSONObject state = waitForModel();
+	redrawGUI(state);
+    }
+
+    private void redrawGUI(JSONObject state) {
+	this.gameWindow.dispose();
+	this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
+    }
+
+    private JSONObject waitForModel() {
+	return VWGameProperties.getInstance().getManager().fetchUpdateFromModel();
+    }
+
+    private void sendStateToModel() {
+	VWGameProperties.getInstance().getManager().sendStateToModel(this.state.serializeState());
     }
 
     private int loadState() {

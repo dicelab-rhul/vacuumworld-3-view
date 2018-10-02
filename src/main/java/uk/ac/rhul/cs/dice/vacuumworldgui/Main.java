@@ -12,8 +12,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 	LogUtils.log("The GUI is running.");
-	//VWControllerManager manager = new VWControllerManager("127.0.0.1", 13337);
-	//manager.setupNetwork();
+	VWControllerManager manager = new VWControllerManager("127.0.0.1", 13337);
+	manager.setupNetwork();
+	
+	VWGameProperties.getInstance().setManager(manager);
 	VWGameProperties.getInstance().setUserMind("VacuumWorldUserMind");
 	VWGameProperties.getInstance().setDefaultMind("VacuumWorldDefaultMind");
 	VWGameProperties.getInstance().addMind("VacuumWorldDefaultMind");
