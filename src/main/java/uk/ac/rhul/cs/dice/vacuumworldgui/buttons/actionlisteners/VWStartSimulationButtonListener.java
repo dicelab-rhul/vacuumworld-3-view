@@ -34,5 +34,17 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
 	getParent().setVisible(false);
 	getParent().invalidate();
 	((JFrame) getParent()).dispose();
+	
+	dumpInitialState();
+	sendStateToModel();
+    }
+
+    private void dumpInitialState() {
+	System.out.println(this.state.serializeState().toString(4));
+    }
+
+    private void sendStateToModel() {
+	// TODO Auto-generated method stub
+	
     }
 }
