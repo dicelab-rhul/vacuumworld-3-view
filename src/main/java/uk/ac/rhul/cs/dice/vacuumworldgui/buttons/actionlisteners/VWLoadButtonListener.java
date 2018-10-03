@@ -14,10 +14,11 @@ import org.json.JSONObject;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameWindow;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
+import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWSwingWorker;
 
 public class VWLoadButtonListener extends VWAbstractButtonListener {
     private JFileChooser loader;
-    private VWState state;
+    private volatile VWState state;
     private VWGameWindow gameWindow;
     
     public VWLoadButtonListener(Component parent) {
@@ -50,6 +51,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
     private void attemptToLoadTheGame(File file) {
 	try {
 	    String path = file.getAbsolutePath();
+	    VWState.reset();
 	    this.state = VWState.getInstance(path);
 	    
 	    System.out.println("Loaded " + path + ".");
@@ -58,6 +60,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	    ((JFrame) getParent()).dispose();
 	    this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
 	    
+	    sendStateToModel();
 	    loop();
 	}
 	catch(Exception e) {
@@ -67,22 +70,25 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
     }
     
     private void loop() {
-	sendStateToModel();
-	JSONObject state = waitForModel();
-	redrawGUI(state);
+	new VWSwingWorker(this).execute();
     }
 
-    private void redrawGUI(JSONObject state) {
-	this.gameWindow.dispose();
-	this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
+    public void redrawGUI(JSONObject state) {
+	VWState.reset(state);
+	this.state = VWState.getInstance(state);
+	LogUtils.log("View here: redrawing the grid...");
+	this.gameWindow.reset(this.state, this.state.getGridSize());
+	LogUtils.log("Done!");
     }
 
-    private JSONObject waitForModel() {
+    public JSONObject waitForModel() {
 	return VWGameProperties.getInstance().getManager().fetchUpdateFromModel();
     }
 
     private void sendStateToModel() {
+	LogUtils.log("View here: sending initial state to the controller...");
 	VWGameProperties.getInstance().getManager().sendStateToModel(this.state.serializeState());
+	LogUtils.log("Done!");
     }
 
     private int loadState() {

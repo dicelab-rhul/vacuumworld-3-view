@@ -37,7 +37,7 @@ public class VWControllerManager {
 	}
     } 
 
-    public void sendAcknowledgementsToModel() {
+    public void sendAcknowledgementToModel() {
 	VacuumWorldMessage message = new VacuumWorldMessage(VWMessageCodes.ACK_FROM_VIEW, null);
 	
 	sendMessage(message);
@@ -57,7 +57,9 @@ public class VWControllerManager {
     
     public JSONObject fetchUpdateFromModel() {
 	try {
-	    return (JSONObject) this.fromController.readObject();
+	    VacuumWorldMessage message = (VacuumWorldMessage) this.fromController.readObject();
+	    
+	    return (JSONObject) message.getContent();
 	}
 	catch(Exception e) {
 	    throw new IllegalArgumentException(e);

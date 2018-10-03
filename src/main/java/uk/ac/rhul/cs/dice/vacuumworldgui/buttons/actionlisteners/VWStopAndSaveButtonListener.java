@@ -9,7 +9,7 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
-    private VWState state;
+    private volatile VWState state;
     
     public VWStopAndSaveButtonListener(Component parent, VWState state) {
 	super(parent);
@@ -36,7 +36,7 @@ public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
 	
 	System.out.println("Saving the current state to " + name + " ...");
 	
-	this.state.saveState(name);
+	VWState.getExistingInstance().saveState(name);
     }
 
     public VWState getState() {

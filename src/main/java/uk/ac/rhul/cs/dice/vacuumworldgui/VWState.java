@@ -73,6 +73,10 @@ public class VWState {
 	}
     }
     
+    public static VWState getExistingInstance() {
+	return VWState.instance;
+    }
+    
     public int getGridSize() {
 	return this.size;
     }

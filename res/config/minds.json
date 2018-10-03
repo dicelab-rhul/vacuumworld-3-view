@@ -1,0 +1,9 @@
+{
+    "agents_default": "uk.ac.rhul.cs.dice.vacuumworld.actors.minds.VacuumWorldDefaultMind",
+    "agents": [
+        "uk.ac.rhul.cs.dice.vacuumworld.actors.minds.VacuumWorldDefaultMind",
+        "uk.ac.rhul.cs.dice.vacuumworld.actors.minds.VacuumWorldGoalOrientedMind",
+        "uk.ac.rhul.cs.dice.vacuumworld.actors.minds.VacuumWorldPrologMind"
+    ],
+    "users": "uk.ac.rhul.cs.dice.vacuumworld.actors.minds.VacuumWorldUserMind"
+}

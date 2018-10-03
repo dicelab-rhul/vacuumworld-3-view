@@ -8,7 +8,7 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWSelectionDialog;
 
 public class VWToggleLocationListener extends VWAbstractToggleLocationListener {
-    private VWState state;
+    private volatile VWState state;
     private Coordinates coordinates;
     
     public VWToggleLocationListener(Component parent, VWState state, Coordinates coordinates) {

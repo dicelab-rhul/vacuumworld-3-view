@@ -11,7 +11,7 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWSelectPieceListener implements MouseListener {
     private Component parent;
-    private VWState state;
+    private volatile VWState state;
     private Coordinates coordinates;
     private String imgPath; 
     

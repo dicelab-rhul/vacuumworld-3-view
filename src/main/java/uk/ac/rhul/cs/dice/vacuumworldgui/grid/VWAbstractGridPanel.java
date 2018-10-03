@@ -11,7 +11,7 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 public abstract class VWAbstractGridPanel implements VWGridPanel {
     private Component parent;
     private int gridSize;
-    private VWState state;
+    private volatile VWState state;
     private GridBagLayout layout;
     private JPanel grid;
     

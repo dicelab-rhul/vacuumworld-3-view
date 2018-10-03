@@ -17,6 +17,7 @@ public class VWGameProperties {
     private static final int MIN_SIZE = 1;
     private static final int MAX_SIZE = 10;
     private static final int DEFAULT_SIZE = 5;
+    public static final String MINDS_FILE = "/res/config/minds.json";
     private VWControllerManager manager;
     
     private VWGameProperties() {
@@ -70,6 +71,10 @@ public class VWGameProperties {
     
     public void setDefaultMind(String mind) {
 	this.defaultMind = mind;
+    }
+    
+    public String getDefaultMind() {
+	return this.defaultMind;
     }
     
     public void removeMind(String mind) {
