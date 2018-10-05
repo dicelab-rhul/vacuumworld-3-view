@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
-import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWStopAndSaveButtonListener;
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWSaveButtonListener;
 
-public class VWStopAndSaveButton extends VWAbstractButton {
-    
-    public VWStopAndSaveButton(Component parent, VWState state) {
-	super("Stop & Save", new VWStopAndSaveButtonListener(parent, state), parent);
+public class VWSaveButton extends VWAbstractButton {
+
+    public VWSaveButton(Component parent, VWState state) {
+	super("Save", new VWSaveButtonListener(parent, state), parent);
     }
     
     @Override

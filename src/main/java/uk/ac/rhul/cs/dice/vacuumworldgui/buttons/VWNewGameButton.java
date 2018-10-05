@@ -3,12 +3,12 @@ package uk.ac.rhul.cs.dice.vacuumworldgui.buttons;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 
-import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWStartButtonListener;
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWNewGameButtonListener;
 
-public class VWStartButton extends VWAbstractButton {
+public class VWNewGameButton extends VWAbstractButton {
 
-    public VWStartButton(Component parent) {
-	super("Start", new VWStartButtonListener(parent), parent);
+    public VWNewGameButton(Component parent) {
+	super("New", new VWNewGameButtonListener(parent), parent);
     }
     
     @Override

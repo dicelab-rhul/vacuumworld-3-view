@@ -3,8 +3,7 @@ package uk.ac.rhul.cs.dice.vacuumworldgui;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-
-import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStartSimulationButton;
+import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWButtonsPanel;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWConstructGridPanel;
 
 public class VWConstructGameWindow {
@@ -25,10 +24,10 @@ public class VWConstructGameWindow {
 	
 	VWConstructGridPanel grid = new VWConstructGridPanel(this.window, VWGameProperties.getInstance().getGridSize());
 	
-	VWStartSimulationButton b = new VWStartSimulationButton(this.window, grid.getState());
-	b.createButton();
+	VWButtonsPanel buttonsPanel = new VWButtonsPanel(this.window);
+	buttonsPanel.generatePanelForConstructGameWindow(grid.getState());
 	
-	this.window.add(b.getButton(), BorderLayout.SOUTH);
+	this.window.add(buttonsPanel.getPanel(), BorderLayout.SOUTH);
 	this.window.add(grid.getGrid(), BorderLayout.CENTER);
 	
 	this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

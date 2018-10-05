@@ -6,22 +6,17 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
-import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
-public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
-    private volatile VWState state;
+public class VWStopButtonListener extends VWAbstractButtonListener {
     
-    public VWStopAndSaveButtonListener(Component parent, VWState state) {
+    public VWStopButtonListener(Component parent) {
 	super(parent);
-	
-	this.state = state;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 	System.out.println("Stopping the simulation...");
 	
-	saveState();
 	VWGameProperties.getInstance().getManager().sendStopToModel();
 	
 	System.out.println("Done.");
@@ -29,17 +24,5 @@ public class VWStopAndSaveButtonListener extends VWAbstractButtonListener {
 	getParent().setVisible(false);
 	getParent().invalidate();
 	((JFrame) getParent()).dispose();
-    }
-    
-    private void saveState() {
-	String name = System.currentTimeMillis() + ".json";
-	
-	System.out.println("Saving the current state to " + name + " ...");
-	
-	VWState.getExistingInstance().saveState(name);
-    }
-
-    public VWState getState() {
-	return this.state;
     }
 }

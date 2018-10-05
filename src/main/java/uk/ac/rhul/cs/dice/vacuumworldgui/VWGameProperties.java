@@ -19,6 +19,7 @@ public class VWGameProperties {
     private static final int DEFAULT_SIZE = 5;
     public static final String MINDS_FILE = "/res/config/minds.json";
     private VWControllerManager manager;
+    private volatile boolean paused;
     
     private VWGameProperties() {
 	this(0);
@@ -47,6 +48,18 @@ public class VWGameProperties {
 	}
 	
 	return VWGameProperties.instance;
+    }
+    
+    public void pause() {
+	this.paused = true;
+    }
+    
+    public void resume() {
+	this.paused = false;
+    }
+    
+    public boolean isPaused() {
+	return this.paused;
     }
     
     public void setManager(VWControllerManager manager) {

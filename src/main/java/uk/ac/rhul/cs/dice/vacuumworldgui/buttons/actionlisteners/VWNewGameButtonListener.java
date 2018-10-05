@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWConstructGameWindow;
 
-public class VWStartButtonListener extends VWAbstractButtonListener {
+public class VWNewGameButtonListener extends VWAbstractButtonListener {
     
-    public VWStartButtonListener(Component parent) {
+    public VWNewGameButtonListener(Component parent) {
 	super(parent);
     }
 

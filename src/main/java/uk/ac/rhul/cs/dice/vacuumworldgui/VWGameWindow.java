@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStopAndSaveButton;
+import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWButtonsPanel;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWGameGridPanel;
 
 public class VWGameWindow {
@@ -25,10 +25,10 @@ public class VWGameWindow {
 	
 	VWGameGridPanel grid = new VWGameGridPanel(this.window, gridSize, state);
 	
-	VWStopAndSaveButton b = new VWStopAndSaveButton(this.window, state);
-	b.createButton();
+	VWButtonsPanel buttonsPanel = new VWButtonsPanel(this.window);
+	buttonsPanel.generatePanelForGameWindow(state);
 	
-	this.window.add(b.getButton(), BorderLayout.SOUTH);
+	this.window.add(buttonsPanel.getPanel(), BorderLayout.SOUTH);
 	this.window.add(grid.getGrid(), BorderLayout.CENTER);
 	
 	this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

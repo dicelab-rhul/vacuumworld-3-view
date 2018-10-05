@@ -20,6 +20,10 @@ public abstract class VWAbstractButton implements VWButton {
 	this.actionListener = actionListener;
     }
     
+    public ActionListener getActionListener() {
+	return this.actionListener;
+    }
+    
     @Override
     public JButton getButton() {
 	return this.button;

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWCreditsButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWLoadButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWOptionsButton;
-import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStartButton;
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWNewGameButton;
 
 public class VWWelcomeWindow {
     private JFrame welcomeWindowFrame;
@@ -34,7 +34,7 @@ public class VWWelcomeWindow {
 	
 	welcomeLabel.setIcon(new ImageIcon(ImageIO.read(Main.class.getResourceAsStream("/res/imgs/start_menu.png"))));
 	
-	VWStartButton startButton = new VWStartButton(this.welcomeWindowFrame);
+	VWNewGameButton startButton = new VWNewGameButton(this.welcomeWindowFrame);
 	startButton.createButton();
 	
 	VWLoadButton loadButton = new VWLoadButton(this.welcomeWindowFrame);

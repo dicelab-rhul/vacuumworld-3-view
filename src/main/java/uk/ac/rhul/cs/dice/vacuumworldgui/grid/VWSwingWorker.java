@@ -40,7 +40,20 @@ public class VWSwingWorker extends SwingWorker<Void, Void> {
 	    JSONObject state = this.firstListener.waitForModel();
 	    LogUtils.log("View here: received an update from the controller!");
 	    this.firstListener.redrawGUI(state);
+	    checkForPause();
 	    VWGameProperties.getInstance().getManager().sendAcknowledgementToModel();
+	}
+    }
+
+    private void checkForPause() {
+	if(VWGameProperties.getInstance().isPaused()) {
+	    LogUtils.log("The system is paused...");
+	}
+	
+	while(VWGameProperties.getInstance().isPaused()) {
+	    if(System.currentTimeMillis() % 1000000 == 0) {
+		LogUtils.log("The system is still paused...");
+	    }
 	}
     }
 
@@ -50,6 +63,7 @@ public class VWSwingWorker extends SwingWorker<Void, Void> {
 	    JSONObject state = this.secondListener.waitForModel();
 	    LogUtils.log("View here: received an update from the controller!");
 	    this.secondListener.redrawGUI(state);
+	    checkForPause();
 	    VWGameProperties.getInstance().getManager().sendAcknowledgementToModel();
 	}
     }
