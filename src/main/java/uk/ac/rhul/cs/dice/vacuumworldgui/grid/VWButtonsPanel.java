@@ -45,14 +45,16 @@ public class VWButtonsPanel {
     }
     
     public void generatePanelForGameWindow(VWState state) {
-	VWPauseButton b = new VWPauseButton(this.parent);
-	b.createButton();
-	
 	VWStopButton b2 = new VWStopButton(this.parent);
 	b2.createButton();
 	
 	VWSaveButton b3 = new VWSaveButton(this.parent, state);
 	b3.createButton();
+	
+	VWPauseButton b = new VWPauseButton(this.parent);
+	b.createButton();
+	b.setStopButtonRefecence(b2);
+	b.setSaveButtonListener(b3);
 	
 	this.panel.add(b.getButton());
 	this.panel.add(b2.getButton());

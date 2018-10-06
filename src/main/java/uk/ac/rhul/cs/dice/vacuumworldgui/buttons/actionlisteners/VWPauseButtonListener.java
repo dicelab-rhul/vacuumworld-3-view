@@ -5,9 +5,13 @@ import java.awt.event.ActionEvent;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWPauseButton;
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWSaveButton;
+import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStopButton;
 
 public class VWPauseButtonListener extends VWAbstractButtonListener {
-    public VWPauseButton button;
+    public VWPauseButton pauseButton;
+    public VWStopButton stopButton;
+    public VWSaveButton saveButton;
     
     public VWPauseButtonListener(Component parent) {
 	super(parent);
@@ -17,17 +21,28 @@ public class VWPauseButtonListener extends VWAbstractButtonListener {
     public void actionPerformed(ActionEvent e) {
 	if(VWGameProperties.getInstance().isPaused()) {
 	    VWGameProperties.getInstance().resume();
-	    this.button.getButton().setText("Pause");
+	    this.pauseButton.getButton().setText("Pause");
+	    this.saveButton.getButton().setEnabled(false);
 	}
 	else {
 	    VWGameProperties.getInstance().pause();
-	    this.button.getButton().setText("Resume");
+	    this.pauseButton.getButton().setText("Resume");
+	    this.saveButton.getButton().setEnabled(true);
 	}
 	
-	this.button.getButton().revalidate();
+	this.pauseButton.getButton().revalidate();
+	this.saveButton.getButton().revalidate();
     }
     
-    public void setButton(VWPauseButton button) {
-	this.button = button;
+    public void setPauseButton(VWPauseButton pauseButton) {
+	this.pauseButton = pauseButton;
+    }
+    
+    public void setStopButton(VWStopButton stopButton) {
+	this.stopButton = stopButton;
+    }
+    
+    public void setSaveButton(VWSaveButton saveButton) {
+	this.saveButton = saveButton;
     }
 }

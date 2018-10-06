@@ -9,11 +9,19 @@ public class VWPauseButton extends VWAbstractButton {
     public VWPauseButton(Component parent) {
 	super("Pause", new VWPauseButtonListener(parent), parent);
 	
-	getActionListener().setButton(this);
+	getActionListener().setPauseButton(this);
     }
     
     @Override
     public VWPauseButtonListener getActionListener() {
         return (VWPauseButtonListener) super.getActionListener();
+    }
+    
+    public void setStopButtonRefecence(VWStopButton button) {
+	getActionListener().setStopButton(button);
+    }
+    
+    public void setSaveButtonListener(VWSaveButton button) {
+	getActionListener().setSaveButton(button);
     }
 }

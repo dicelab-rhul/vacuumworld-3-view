@@ -19,6 +19,7 @@ public class VWSaveButton extends VWAbstractButton {
 	
 	getButton().setMinimumSize(new Dimension(200, 40));
 	getButton().setPreferredSize(new Dimension(200, 40));
+	getButton().setEnabled(false);
 	
 	this.constraints.gridy = 0;
 	this.constraints.anchor = GridBagConstraints.CENTER;
