@@ -17,7 +17,7 @@ public class VWGameProperties {
     private static final int MIN_SIZE = 1;
     private static final int MAX_SIZE = 10;
     private static final int DEFAULT_SIZE = 5;
-    public static final String MINDS_FILE = "/res/config/minds.json";
+    public static final String MINDS_FILE = "minds.json";
     private VWControllerManager manager;
     private volatile boolean paused;
     

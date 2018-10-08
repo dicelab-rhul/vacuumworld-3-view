@@ -51,16 +51,23 @@ public class Main {
 	new VWWelcomeWindow();
     }
 
-    private static List<List<String>> parseMindsFile() throws IOException {
+    private static List<List<String>> parseMindsFile() throws IOException {	
 	try {
-	    JSONTokener tokener = new JSONTokener(Main.class.getResource(VWGameProperties.MINDS_FILE).openStream());
+	    JSONTokener tokener = new JSONTokener(new FileInputStream(VWGameProperties.MINDS_FILE));
 	    JSONObject root = new JSONObject(tokener);
 	    
 	    return parseMinds(root);
 	}
+	catch(FileNotFoundException e) {
+	    LogUtils.fakeLog(e);
+	    LogUtils.log(VWGameProperties.MINDS_FILE + " was not found.");
+	    
+	    return null;
+	}
 	catch(Exception e) {
-	    e.printStackTrace(System.out);
-	    throw new IOException(e);
+	    LogUtils.fakeLog(e);
+	    
+	    return null;
 	}
     }
 
