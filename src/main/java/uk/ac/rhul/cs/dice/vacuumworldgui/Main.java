@@ -12,10 +12,10 @@ import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWJSON;
 import uk.ac.rhul.cs.dice.vacuumworldgui.communication.VWControllerManager;
 
 public class Main {
-    private static final String HOST = "127.0.0.1";
     private static final String CONFIG_FILE_PATH = "config.json";
     
     private Main() {}
@@ -23,21 +23,22 @@ public class Main {
     public static void main(String[] args) throws IOException {
 	LogUtils.enableVerbose();
 	LogUtils.log("The GUI is running.");
-	String port = getPort();
+	String[] fromConfig = getDetailsFromConfigFile();
 	
-	if (!checkPort(port)) {
+	if (!checkPort(fromConfig[1])) {
 	    LogUtils.log("Malformed or illegal details have been provided. Please edit " + CONFIG_FILE_PATH + " and retry.");
 	}
 	else {
-	    init(port);
+	    init(fromConfig[0], fromConfig[1], fromConfig[2]);
 	}
     }
 
-    private static void init(String port) throws IOException {
-	VWControllerManager manager = new VWControllerManager(HOST, Integer.valueOf(port));
+    private static void init(String hostname, String port, String whiteLocationPath) throws IOException {
+	VWControllerManager manager = new VWControllerManager(hostname, Integer.valueOf(port));
 	manager.setupNetwork();
 	
 	VWGameProperties.getInstance().setManager(manager);
+	VWGameProperties.getInstance().setWhiteLocationPath(whiteLocationPath);
 	
 	List<List<String>> minds = parseMindsFile();
 	List<String> agentMinds = minds == null ? Collections.emptyList() : minds.get(0);
@@ -73,30 +74,30 @@ public class Main {
     }
 
     private static List<List<String>> parseMinds(JSONObject root) {
-	List<String> agentMinds = root.getJSONArray("agents").toList().stream().map(mind -> (String) mind).collect(Collectors.toList());
-	List<String> userMinds = Arrays.asList(root.getString("users"));
-	List<String> defaultMind = Arrays.asList(root.getString("agents_default"));
+	List<String> agentMinds = root.getJSONArray(VWJSON.AGENTS).toList().stream().map(mind -> (String) mind).collect(Collectors.toList());
+	List<String> userMinds = Arrays.asList(root.getString(VWJSON.USERS));
+	List<String> defaultMind = Arrays.asList(root.getString(VWJSON.AGENTS_DEFAULT));
 	
 	return Arrays.asList(agentMinds, userMinds, defaultMind);
     }
     
-    private static String getPort() {
+    private static String[] getDetailsFromConfigFile() {
 	try {
 	    JSONTokener tokener = new JSONTokener(new FileInputStream(CONFIG_FILE_PATH));
 	    JSONObject root = new JSONObject(tokener);
 	    
-	    return root.getString("controller_port");
+	    return new String[] {root.getString(VWJSON.CONTROLLER_HOSTNAME), root.getString(VWJSON.CONTROLLER_PORT), root.getString(VWJSON.WHITE_LOCATION_PATH)};
 	}
 	catch(FileNotFoundException e) {
 	    LogUtils.fakeLog(e);
 	    LogUtils.log(CONFIG_FILE_PATH + " was not found.");
 	    
-	    return null;
+	    return new String[] {null, null, null};
 	}
 	catch(Exception e) {
 	    LogUtils.fakeLog(e);
 	    
-	    return null;
+	    return new String[] {null, null, null};
 	}
     }
     

@@ -18,6 +18,7 @@ public class VWGameProperties {
     private static final int MAX_SIZE = 10;
     private static final int DEFAULT_SIZE = 5;
     public static final String MINDS_FILE = "minds.json";
+    private String whiteLocationPath;
     private VWControllerManager manager;
     private volatile boolean paused;
     private volatile boolean started;
@@ -30,6 +31,7 @@ public class VWGameProperties {
 	this.gridSize = gridSize;
 	this.minds = new HashSet<>();
 	this.assignedMinds = new HashMap<>();
+	this.whiteLocationPath = "";
     }
 
     public static VWGameProperties getInstance() {
@@ -49,6 +51,14 @@ public class VWGameProperties {
 	}
 	
 	return VWGameProperties.instance;
+    }
+    
+    public void setWhiteLocationPath(String whiteLocationPath) {
+	this.whiteLocationPath = whiteLocationPath;
+    }
+    
+    public String getWhiteLocationPath() {
+	return this.whiteLocationPath;
     }
     
     public void pause() {
