@@ -16,7 +16,6 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWOptionsButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWNewGameButton;
 
 public class VWWelcomeWindow {
-    private JFrame welcomeWindowFrame;
     private static final int WIDTH = 500;
     private static final int HEIGHT = 545;
     
@@ -25,25 +24,25 @@ public class VWWelcomeWindow {
     }
 
     private void buildWelcomeWindow() throws IOException {
-	this.welcomeWindowFrame = new JFrame();
-	this.welcomeWindowFrame.setTitle("Welcome to VacuumWorld 3.0!");
-	this.welcomeWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	JFrame welcomeWindowFrame = new JFrame();
+	welcomeWindowFrame.setTitle("Welcome to VacuumWorld 3.0!");
+	welcomeWindowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	JPanel welcomePanel = new JPanel();
 	JLabel welcomeLabel = new JLabel();
 	
 	welcomeLabel.setIcon(new ImageIcon(ImageIO.read(Main.class.getResourceAsStream("/res/imgs/start_menu.png"))));
 	
-	VWNewGameButton startButton = new VWNewGameButton(this.welcomeWindowFrame);
+	VWNewGameButton startButton = new VWNewGameButton(welcomeWindowFrame);
 	startButton.createButton();
 	
-	VWLoadButton loadButton = new VWLoadButton(this.welcomeWindowFrame);
+	VWLoadButton loadButton = new VWLoadButton(welcomeWindowFrame);
 	loadButton.createButton();
 	
-	VWOptionsButton optionsButton = new VWOptionsButton(this.welcomeWindowFrame);
+	VWOptionsButton optionsButton = new VWOptionsButton(welcomeWindowFrame);
 	optionsButton.createButton();
 	
-	VWCreditsButton creditsButton = new VWCreditsButton(this.welcomeWindowFrame);
+	VWCreditsButton creditsButton = new VWCreditsButton(welcomeWindowFrame);
 	creditsButton.createButton();
 	
 	welcomeLabel.setLayout(new GridBagLayout());
@@ -54,9 +53,9 @@ public class VWWelcomeWindow {
 	
 	welcomePanel.add(welcomeLabel);
 	
-	this.welcomeWindowFrame.add(welcomePanel);
-	this.welcomeWindowFrame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-	this.welcomeWindowFrame.setLocationRelativeTo(null);
-	this.welcomeWindowFrame.setVisible(true);
+	welcomeWindowFrame.add(welcomePanel);
+	welcomeWindowFrame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+	welcomeWindowFrame.setLocationRelativeTo(null);
+	welcomeWindowFrame.setVisible(true);
     }
 }

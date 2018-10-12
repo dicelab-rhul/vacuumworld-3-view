@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.swing.JPanel;
-
 import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWJSON;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWConstructGridPanel;
 
 public class VWState {
@@ -77,6 +76,18 @@ public class VWState {
 	return VWState.instance;
     }
     
+    public boolean isAValidInitialState() {
+	return checkUserLimit() && isAnAgentThere();
+    }
+    
+    private boolean isAnAgentThere() {
+	return this.locations.entrySet().stream().filter(e -> e.getValue().doesAnAgentExist()).count() > 0;
+    }
+
+    private boolean checkUserLimit() {
+	return this.locations.entrySet().stream().filter(e -> e.getValue().doesAUserExist()).count() < 2;
+    }
+
     public int getGridSize() {
 	return this.size;
     }
@@ -120,7 +131,6 @@ public class VWState {
 	    fw.flush();
 	}
 	catch(Exception e) {
-	    e.printStackTrace(System.out);
 	    LogUtils.log("It was impossible to save the state to " + path + ".");
 	    LogUtils.log(e);
 	}
@@ -131,7 +141,7 @@ public class VWState {
     }
     
     public void resetLocation(Coordinates coordinates) {
-	if(this.locations.get(coordinates).doesAnActorExist() && this.numberOfActors > 0) {
+	if(this.locations.get(coordinates).doesAnAgentExist() && this.numberOfActors > 0) {
 	    this.numberOfActors--;
 	}
 	
@@ -159,14 +169,17 @@ public class VWState {
 	location.setP1(actor);
 	
 	this.locations.put(coordinates, location);
-	this.numberOfActors++;
+	
+	if(!imagePath.contains(VWJSON.USER)) {
+	    this.numberOfActors++;
+	}
     }
 
     private String getMind(String name) {
 	switch(getType(name)) {
-	case "user":
+	case VWJSON.USER:
 	    return VWGameProperties.getInstance().getUserMind();
-	case "avatar":
+	case VWJSON.AVATAR:
 	    return "";
 	default:
 	    return getAgentMind(getActorColor(name));
@@ -175,12 +188,12 @@ public class VWState {
 
     private String getAgentMind(String color) {
 	switch(color) {
-	case "green":
-	    return VWGameProperties.getInstance().getMind("green");
-	case "orange":
-	    return VWGameProperties.getInstance().getMind("orange");
-	case "white":
-	    return VWGameProperties.getInstance().getMind("white");
+	case VWJSON.GREEN_AGENT:
+	    return VWGameProperties.getInstance().getMind(VWJSON.GREEN_AGENT);
+	case VWJSON.ORANGE_AGENT:
+	    return VWGameProperties.getInstance().getMind(VWJSON.ORANGE_AGENT);
+	case VWJSON.WHITE_AGENT:
+	    return VWGameProperties.getInstance().getMind(VWJSON.WHITE_AGENT);
 	default:
 	    return "";
 	}
@@ -191,7 +204,7 @@ public class VWState {
 	
 	VWIncrementalPiece dirt = new VWIncrementalPiece();
 	
-	dirt.setType("dirt");
+	dirt.setType(VWJSON.DIRT);
 	dirt.setColor(getDirtColor(imagePath));
 	dirt.setImgPath(imagePath);
 	location.setP1(dirt);
@@ -203,7 +216,7 @@ public class VWState {
 	VWIncrementalLocation location = this.locations.get(coordinates);
 	VWIncrementalPiece dirt = new VWIncrementalPiece();
 	
-	dirt.setType("dirt");
+	dirt.setType(VWJSON.DIRT);
 	dirt.setColor(getDirtColor(imagePath));
 	dirt.setImgPath(imagePath);
 	location.setP2(dirt);
@@ -239,26 +252,29 @@ public class VWState {
 	location.setP2(dirt);
 	
 	this.locations.put(coordinates, location);
-	this.numberOfActors++;
+	
+	if(!imagePath.contains(VWJSON.USER)) {
+	    this.numberOfActors++;
+	}
     }
     
     private String getType(String name) {
-	if(name.startsWith("user")) {
-	    return "user";
+	if(name.startsWith(VWJSON.USER)) {
+	    return VWJSON.USER;
 	}
-	else if(name.startsWith("avatar")) {
-	    return "avatar";
+	else if(name.startsWith(VWJSON.AVATAR)) {
+	    return VWJSON.AVATAR;
 	}
 	else {
-	    return "cleaning_agent";
+	    return VWJSON.CLEANING_AGENT;
 	}
     }
 
     private String generateActorId(String name) {
 	switch(getType(name)) {
-	case "user":
+	case VWJSON.USER:
 	    return "User-" + UUID.randomUUID();
-	case "avatar":
+	case VWJSON.AVATAR:
 	    return "Avatar-" + UUID.randomUUID();
 	default:
 	    return "Agent-" + UUID.randomUUID();
@@ -268,7 +284,7 @@ public class VWState {
     private String getActorColor(String name) {
 	String type = getType(name);
 	
-	if(!"cleaning_agent".equals(type)) {
+	if(!VWJSON.CLEANING_AGENT.equals(type)) {
 	    return null;
 	}
 	else {
@@ -282,7 +298,7 @@ public class VWState {
 
     private List<List<String>> generateNewSensors() {
 	List<List<String>> sensors = new ArrayList<>();
-	List<String> purposes = Arrays.asList("see", "listen", "other"); //TODO extract to an enum in vwcommon.
+	List<String> purposes = Arrays.asList(VWJSON.SENSOR_SEE, VWJSON.SENSOR_LISTEN, VWJSON.SENSOR_ACTUATOR_OTHER);
 	
 	purposes.forEach(purpose -> sensors.add(Arrays.asList("Sensor-" + UUID.randomUUID(), purpose)));
 	
@@ -291,23 +307,11 @@ public class VWState {
 
     private List<List<String>> generateNewActuators() {
 	List<List<String>> actuators = new ArrayList<>();
-	List<String> purposes = Arrays.asList("act_physically", "speak", "other"); //TODO extract to an enum in vwcommon.
+	List<String> purposes = Arrays.asList(VWJSON.ACTUATOR_ACT_PHYSICALLY, VWJSON.ACTUATOR_SPEAK, VWJSON.SENSOR_ACTUATOR_OTHER);
 	
 	purposes.forEach(purpose -> actuators.add(Arrays.asList("Actuator-" + UUID.randomUUID(), purpose)));
 	
 	return actuators;
-    }
-
-    /**
-     * 
-     * Renders the state into a {@link JPanel} for the view.
-     * 
-     * @return a {@link JPanel} representation of the state.
-     * 
-     */
-    public JPanel renderIntoJPanel() {
-	//TODO
-	return null;
     }
     
     /**
@@ -320,30 +324,30 @@ public class VWState {
     public JSONObject serializeState() {
 	JSONObject initial = new JSONObject();
 	
-	initial.put("size", this.size);
+	initial.put(VWJSON.SIZE, this.size);
 	
 	JSONArray notableLocations = createNotableLocations();
 	
-	initial.put("notable_locations", notableLocations);
+	initial.put(VWJSON.NOTABLE_LOCATIONS, notableLocations);
 	
 	return initial;
     }
 
     private void extractSize(JSONObject state) {
-	if(!state.has("size")) {
+	if(!state.has(VWJSON.SIZE)) {
 	    throw new IllegalArgumentException();
 	}
 	else {
-	    this.size = state.getInt("size");
+	    this.size = state.getInt(VWJSON.SIZE);
 	}
     }
 
     private void deserialize(JSONObject state) {
-	if(!state.has("notable_locations")) {
+	if(!state.has(VWJSON.NOTABLE_LOCATIONS)) {
 	    throw new IllegalArgumentException();
 	}
 	else {
-	    deserializeLocations(state.getJSONArray("notable_locations"));
+	    deserializeLocations(state.getJSONArray(VWJSON.NOTABLE_LOCATIONS));
 	    padMissingLocations();
 	}
     }
@@ -359,20 +363,20 @@ public class VWState {
 	    throw new IllegalArgumentException();
 	}
 	else {
-	    Coordinates coordinates = new Coordinates(location.getInt("x"), location.getInt("y"));
+	    Coordinates coordinates = new Coordinates(location.getInt(VWJSON.X), location.getInt(VWJSON.Y));
 	    
 	    this.locations.put(coordinates, deserializeLocationHelper(location, coordinates));
 	}
     }
 
     private VWIncrementalLocation deserializeLocationHelper(JSONObject location, Coordinates coordinates) {
-	if(location.has("actor") && location.has("dirt")) {
+	if(location.has(VWJSON.ACTOR) && location.has(VWJSON.DIRT)) {
 	    return createLocationWithActorAndDirt(location, coordinates);
 	}
-	else if(location.has("actor")) {
+	else if(location.has(VWJSON.ACTOR)) {
 	    return createLocationWithLoneActor(location, coordinates);
 	}
-	else if(location.has("dirt")) {
+	else if(location.has(VWJSON.DIRT)) {
 	    return createLocationWithLoneDirt(location, coordinates);
 	}
 	else {
@@ -381,29 +385,29 @@ public class VWState {
     }
 
     private VWIncrementalLocation createLocationWithActorAndDirt(JSONObject location, Coordinates coordinates) {
-	VWIncrementalPiece actor = createActor(location.getJSONObject("actor"));
-	VWIncrementalPiece dirt = createDirt(location.getJSONObject("dirt"));
+	VWIncrementalPiece actor = createActor(location.getJSONObject(VWJSON.ACTOR));
+	VWIncrementalPiece dirt = createDirt(location.getJSONObject(VWJSON.DIRT));
 	
 	return new VWIncrementalLocation(coordinates, actor, dirt);
     }
 
     private VWIncrementalLocation createLocationWithLoneActor(JSONObject location, Coordinates coordinates) {
-	VWIncrementalPiece actor = createActor(location.getJSONObject("actor"));
+	VWIncrementalPiece actor = createActor(location.getJSONObject(VWJSON.ACTOR));
 	
 	return new VWIncrementalLocation(coordinates, actor, new VWIncrementalPiece());
     }
 
     private VWIncrementalPiece createActor(JSONObject a) {	
-	String type = a.getString("type");
-	String id = a.getString("id");
-	String orientation = a.getString("orientation");
-	String mind = a.getString("mind");
+	String type = a.getString(VWJSON.TYPE);
+	String id = a.getString(VWJSON.ACTOR_ID);
+	String orientation = a.getString(VWJSON.ORIENTATION);
+	String mind = a.getString(VWJSON.MIND);
 	
-	Object color = a.get("color");
-	String col = JSONObject.NULL.equals(color) ? null : a.getString("color");
+	Object color = a.get(VWJSON.ACTOR_COLOR);
+	String col = JSONObject.NULL.equals(color) ? null : a.getString(VWJSON.ACTOR_COLOR);
 	
-	JSONArray sensors = a.getJSONArray("sensors");
-	JSONArray actuators = a.getJSONArray("actuators");
+	JSONArray sensors = a.getJSONArray(VWJSON.SENSORS);
+	JSONArray actuators = a.getJSONArray(VWJSON.ACTUATORS);
 	
 	return createActor(type, id, orientation, mind, col, sensors, actuators);
     }
@@ -447,8 +451,8 @@ public class VWState {
     private List<String> getAppendixHelper(JSONObject appendix) {
 	List<String> characteristics = new ArrayList<>();
 	
-	characteristics.add(appendix.getString("id"));
-	characteristics.add(appendix.getString("purpose"));
+	characteristics.add(appendix.getString(VWJSON.SENSOR_ACTUATOR_ID));
+	characteristics.add(appendix.getString(VWJSON.SENSOR_ACTUATOR_PURPOSE));
 	
 	return characteristics;
     }
@@ -457,14 +461,14 @@ public class VWState {
 	StringBuilder builder = new StringBuilder("/res/imgs/locations/");
 	
 	switch(type) {
-	case "cleaning_agent":
+	case VWJSON.CLEANING_AGENT:
 	    builder.append(color);
 	    break;
-	case "user":
-	    builder.append("user");
+	case VWJSON.USER:
+	    builder.append(VWJSON.USER);
 	    break;
-	case "avatar":
-	    builder.append("avatar");
+	case VWJSON.AVATAR:
+	    builder.append(VWJSON.AVATAR);
 	    break;
 	default:
 	    throw new IllegalArgumentException();
@@ -478,7 +482,7 @@ public class VWState {
     }
 
     private VWIncrementalLocation createLocationWithLoneDirt(JSONObject location, Coordinates coordinates) {
-	VWIncrementalPiece dirt = createDirt(location.getJSONObject("dirt"));
+	VWIncrementalPiece dirt = createDirt(location.getJSONObject(VWJSON.DIRT));
 	
 	return new VWIncrementalLocation(coordinates, dirt, new VWIncrementalPiece());
     }
@@ -486,8 +490,8 @@ public class VWState {
     private VWIncrementalPiece createDirt(JSONObject d) {
 	VWIncrementalPiece dirt = new VWIncrementalPiece();
 	
-	dirt.setType("dirt");
-	String color = d.getString("color"); //guaranteed to be a String for dirts.
+	dirt.setType(VWJSON.DIRT);
+	String color = d.getString(VWJSON.DIRT_COLOR); //guaranteed to be a String for dirts.
 	dirt.setColor(color);
 	dirt.setImgPath("/res/imgs/locations/" + color + "_dirt.png");
 	
@@ -497,7 +501,7 @@ public class VWState {
     private void padMissingLocations() {
 	for(int i = 0; i < this.size; i++) {
 	    for(int j = 0; j < this.size; j++) {
-		Coordinates coordinates = new Coordinates(i, j); //TODO check.
+		Coordinates coordinates = new Coordinates(i, j);
 		
 		if(!this.locations.containsKey(coordinates)) {
 		    this.locations.put(coordinates, new VWIncrementalLocation(coordinates, new VWIncrementalPiece(), new VWIncrementalPiece()));
@@ -522,19 +526,19 @@ public class VWState {
     private JSONObject createLocation(VWIncrementalLocation loc) {
 	JSONObject location = new JSONObject();
 	
-	location.put("x", loc.getCoordinates().getX());
-	location.put("y", loc.getCoordinates().getY());
+	location.put(VWJSON.X, loc.getCoordinates().getX());
+	location.put(VWJSON.Y, loc.getCoordinates().getY());
 	
 	//by construction, either an actor or a dirt are there.
 	if(loc.doesAnActorExist()) {
-	    location.put("actor", loc.getP1().serialize());
+	    location.put(VWJSON.ACTOR, loc.getP1().serialize());
 	}
 	else {
-	    location.put("dirt", loc.getP1().serialize());
+	    location.put(VWJSON.DIRT, loc.getP1().serialize());
 	}
 	
 	if(loc.isActorAndDirt()) {
-	    location.put("dirt", loc.getP2().serialize());
+	    location.put(VWJSON.DIRT, loc.getP2().serialize());
 	}
 	
 	return location;

@@ -16,7 +16,7 @@ public class VWCreditsDialog extends VWAbstractDialog {
     public void createDialog() {	
 	super.createDialog();
 	
-	String creditsString = "<html>VacuumWorld 3.0<br/><br/>Powered by:<br/><br/>Emanuele Uliana<br/>Benedict Wilkins<br/>Kostas Stathis</html>";
+	String creditsString = "<html>VacuumWorld 3.0<br/><br/>Powered by:<br/><br/>Emanuele Uliana<br/>Benedict Wilkins<br/>Joel Clarke<br/>Kostas Stathis</html>";
 	JLabel creditsLabel = new JLabel(creditsString, SwingConstants.CENTER);
 	
 	this.dialog.add(creditsLabel);

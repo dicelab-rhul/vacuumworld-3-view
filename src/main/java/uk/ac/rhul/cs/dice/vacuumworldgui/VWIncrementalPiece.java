@@ -8,6 +8,8 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWJSON;
+
 public class VWIncrementalPiece {
     private String id;
     private String type;
@@ -21,7 +23,7 @@ public class VWIncrementalPiece {
     
     public VWIncrementalPiece() {
 	this.id = null;
-	this.type = "blank";
+	this.type = VWJSON.BLANK;
 	this.color = null;
 	this.orientation = null;
 	this.mind = null;
@@ -31,19 +33,19 @@ public class VWIncrementalPiece {
     }
     
     public boolean isBlank() {
-	return "blank".equals(this.type);
+	return VWJSON.BLANK.equals(this.type);
     }
     
     public boolean isAgent() {
-	return "cleaning_agent".equals(this.type);
+	return VWJSON.CLEANING_AGENT.equals(this.type);
     }
     
     public boolean isUser() {
-	return "user".equals(this.type);
+	return VWJSON.USER.equals(this.type);
     }
     
     public boolean isAvatar() {
-	return "avatar".equals(this.type);
+	return VWJSON.AVATAR.equals(this.type);
     }
     
     public boolean isActor() {
@@ -51,7 +53,7 @@ public class VWIncrementalPiece {
     }
     
     public boolean isDirt() {
-	return "dirt".equals(this.type);
+	return VWJSON.DIRT.equals(this.type);
     }
     
     public String getId() {
@@ -166,44 +168,44 @@ public class VWIncrementalPiece {
 
     private JSONObject serializeActor(String prefix) {
 	JSONObject agent = new JSONObject();
-	agent.put("type", this.type);
-	agent.put("id", prefix + UUID.randomUUID());
-	agent.put("color", this.color == null ? JSONObject.NULL : this.color);
-	agent.put("orientation", this.orientation);
-	agent.put("mind", this.mind);
-	agent.put("sensors", serializeSensors());
-	agent.put("actuators", serializeActuators());
+	agent.put(VWJSON.TYPE, this.type);
+	agent.put(VWJSON.ACTOR_ID, prefix + UUID.randomUUID());
+	agent.put(VWJSON.ACTOR_COLOR, this.color == null ? JSONObject.NULL : this.color);
+	agent.put(VWJSON.ORIENTATION, this.orientation);
+	agent.put(VWJSON.MIND, this.mind);
+	agent.put(VWJSON.SENSORS, serializeSensors());
+	agent.put(VWJSON.ACTUATORS, serializeActuators());
 	
 	return agent;
     }
 
     private JSONArray serializeSensors() {
-	JSONArray sensors = new JSONArray();
+	JSONArray sensorsArray = new JSONArray();
 	
-	this.sensors.forEach(sensor -> sensors.put(serializeAppendix(sensor)));
+	this.sensors.forEach(sensor -> sensorsArray.put(serializeAppendix(sensor)));
 	
-	return sensors;
+	return sensorsArray;
     }
 
     private JSONArray serializeActuators() {
-	JSONArray actuators = new JSONArray();
+	JSONArray actuatorsArray = new JSONArray();
 	
-	this.actuators.forEach(actuator -> actuators.put(serializeAppendix(actuator)));
+	this.actuators.forEach(actuator -> actuatorsArray.put(serializeAppendix(actuator)));
 	
-	return actuators;
+	return actuatorsArray;
     }
     
     private JSONObject serializeAppendix(List<String> appendix) {
 	JSONObject a = new JSONObject();
-	a.put("id", appendix.get(0));
-	a.put("purpose", appendix.get(1));
+	a.put(VWJSON.SENSOR_ACTUATOR_ID, appendix.get(0));
+	a.put(VWJSON.SENSOR_ACTUATOR_PURPOSE, appendix.get(1));
 	
 	return a;
     }
 
     private JSONObject serializeDirt() {
 	JSONObject dirt = new JSONObject();
-	dirt.put("color", this.color);
+	dirt.put(VWJSON.DIRT_COLOR, this.color);
 	
 	return dirt;
     }

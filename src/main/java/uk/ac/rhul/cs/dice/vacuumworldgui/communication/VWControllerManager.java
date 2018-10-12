@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWMessageCodes;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldMessage;
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldRuntimeException;
 
 public class VWControllerManager {
     private Socket socketWithController;
@@ -33,7 +34,7 @@ public class VWControllerManager {
 	    LogUtils.log("View here: connected to the controller at " + controllerIp + ":" + controllerPort + ".");
 	}
 	catch (Exception e) {
-	    throw new RuntimeException(e);
+	    throw new VacuumWorldRuntimeException(e);
 	}
     } 
 
@@ -59,7 +60,7 @@ public class VWControllerManager {
 	try {
 	    VacuumWorldMessage message = (VacuumWorldMessage) this.fromController.readObject();
 	    
-	    return (JSONObject) message.getContent();
+	    return message.getContent();
 	}
 	catch(Exception e) {
 	    throw new IllegalArgumentException(e);
@@ -130,7 +131,7 @@ public class VWControllerManager {
 	    this.toController.flush();
 	}
 	catch (Exception e) {
-	    throw new RuntimeException(e);
+	    throw new VacuumWorldRuntimeException(e);
 	}
     }
 
@@ -139,7 +140,7 @@ public class VWControllerManager {
 	    return (VacuumWorldMessage) this.fromController.readObject();
 	}
 	catch (Exception e) {
-	    throw new RuntimeException(e);
+	    throw new VacuumWorldRuntimeException(e);
 	}
     }
 }

@@ -93,25 +93,25 @@ public class VWLocationAppearance {
     }
 
     private JSONObject serializeDirt() {
-	JSONObject dirt = new JSONObject();
+	JSONObject dirtObject = new JSONObject();
 	
-	dirt.append("color", this.dirt.toString());
+	dirtObject.append("color", this.dirt.toString());
 	
-	return dirt;
+	return dirtObject;
     }
 
     private JSONObject serializeActor() {
-	JSONObject actor = new JSONObject();
+	JSONObject actorObject = new JSONObject();
 	
-	actor.append("type", this.actor.getType());
-	actor.append("id", this.actorId);
-	actor.append("color", this.actor.getColor());
-	actor.append("orientation", this.actorOrientation.toString());
-	actor.append("mind", this.actorMind);
-	actor.append("sensors", serializeSensors());
-	actor.append("actuators", serializeActuators());
+	actorObject.append("type", this.actor.getType());
+	actorObject.append("id", this.actorId);
+	actorObject.append("color", this.actor.getColor());
+	actorObject.append("orientation", this.actorOrientation.toString());
+	actorObject.append("mind", this.actorMind);
+	actorObject.append("sensors", serializeSensors());
+	actorObject.append("actuators", serializeActuators());
 	
-	return actor;
+	return actorObject;
     }
 
     private JSONArray serializeSensors() {

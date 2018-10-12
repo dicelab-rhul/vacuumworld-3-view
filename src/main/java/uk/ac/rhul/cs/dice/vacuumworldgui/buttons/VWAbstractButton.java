@@ -18,6 +18,7 @@ public abstract class VWAbstractButton implements VWButton {
     public VWAbstractButton(String text, ActionListener actionListener, Component parent) {
 	this.text = text;
 	this.actionListener = actionListener;
+	this.parent = parent;
     }
     
     public ActionListener getActionListener() {

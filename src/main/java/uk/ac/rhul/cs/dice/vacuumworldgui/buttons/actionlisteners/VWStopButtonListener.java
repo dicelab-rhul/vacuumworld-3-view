@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 
 public class VWStopButtonListener extends VWAbstractButtonListener {
@@ -15,11 +17,11 @@ public class VWStopButtonListener extends VWAbstractButtonListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	System.out.println("Stopping the simulation...");
+	LogUtils.log("Stopping the simulation...");
 	
 	VWGameProperties.getInstance().getManager().sendStopToModel();
 	
-	System.out.println("Done.");
+	LogUtils.log("Done.");
 	
 	getParent().setVisible(false);
 	getParent().invalidate();

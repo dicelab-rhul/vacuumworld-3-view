@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
-public class VWSelectionPanel implements VWGridPanel { //TODO change this
+public class VWSelectionPanel implements VWGridPanel {
     private JPanel grid;
     private Component parent;
     private static final int NUMBER_OF_DIFFERENT_PIECES = 14; //4 white + 4 green + 4 user + 1 green dirt + 1 orenge dirt.
@@ -105,7 +105,7 @@ public class VWSelectionPanel implements VWGridPanel { //TODO change this
 	case 1:
 	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/orange_dirt.png", 3, j);
 	case 2:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_square.png", 3, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/user_north.png", 3, j);
 	case 3:
 	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_square.png", 3, j);
 	default:

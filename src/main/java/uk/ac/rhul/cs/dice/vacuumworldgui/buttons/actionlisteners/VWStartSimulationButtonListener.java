@@ -26,20 +26,31 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if(this.state.areThereAnyActors()) {
-	    System.out.println("Starting simulation!");
-	    startSimulation();
+	    checkAndStartSimulation();
 	}
 	else {
-	    System.out.println("Not starting: not enough actors!");
+	    LogUtils.log("Not starting: not enough actors!");
 	}
     }
 
+    private void checkAndStartSimulation() {
+	if(VWState.getExistingInstance().isAValidInitialState()) {
+	    LogUtils.log("Starting simulation!");
+	    startSimulation();
+	}
+	else {
+	    LogUtils.log("Illegal initial state: not starting the simulation!");
+	}
+    }
+    
     private void startSimulation() {
 	this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
 	
 	getParent().setVisible(false);
 	getParent().invalidate();
 	((JFrame) getParent()).dispose();
+	
+	VWGameProperties.getInstance().setStarted();
 	
 	sendStateToModel();
 	loop();

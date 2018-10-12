@@ -20,6 +20,7 @@ public class VWGameProperties {
     public static final String MINDS_FILE = "minds.json";
     private VWControllerManager manager;
     private volatile boolean paused;
+    private volatile boolean started;
     
     private VWGameProperties() {
 	this(0);
@@ -56,6 +57,14 @@ public class VWGameProperties {
     
     public void resume() {
 	this.paused = false;
+    }
+    
+    public void setStarted() {
+	this.started = true;
+    }
+    
+    public boolean hasTheSimulationBeenStarted() {
+	return this.started;
     }
     
     public boolean isPaused() {

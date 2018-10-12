@@ -41,6 +41,14 @@ public class VWIncrementalLocation {
 	return this.p1.isActor();
     }
     
+    public boolean doesAnAgentExist() {
+	return this.p1.isAgent();
+    }
+    
+    public boolean doesAUserExist() {
+	return this.p1.isUser();
+    }
+    
     public boolean doesADirtExist() {
 	return this.p1.isDirt() || this.p2.isDirt();
     }

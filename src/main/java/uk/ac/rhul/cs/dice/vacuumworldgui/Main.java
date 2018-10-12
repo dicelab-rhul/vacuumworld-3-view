@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,13 +21,12 @@ public class Main {
     private Main() {}
 
     public static void main(String[] args) throws IOException {
+	LogUtils.enableVerbose();
 	LogUtils.log("The GUI is running.");
 	String port = getPort();
 	
 	if (!checkPort(port)) {
 	    LogUtils.log("Malformed or illegal details have been provided. Please edit " + CONFIG_FILE_PATH + " and retry.");
-	    
-	    return;
 	}
 	else {
 	    init(port);
@@ -40,11 +40,12 @@ public class Main {
 	VWGameProperties.getInstance().setManager(manager);
 	
 	List<List<String>> minds = parseMindsFile();
-	List<String> agentMinds = minds.get(0);
-	List<String> userMinds = minds.get(1);
+	List<String> agentMinds = minds == null ? Collections.emptyList() : minds.get(0);
+	List<String> userMinds = minds == null ? Collections.emptyList() : minds.get(1);
+	List<String> defaultMinds = minds == null ? Collections.emptyList() : minds.get(2);
 	
-	VWGameProperties.getInstance().setUserMind(userMinds.get(0)); //TODO change this
-	VWGameProperties.getInstance().setDefaultMind(minds.get(2).get(0)); //TODO change this
+	VWGameProperties.getInstance().setUserMind(userMinds.get(0));
+	VWGameProperties.getInstance().setDefaultMind(defaultMinds.get(0));
 	
 	agentMinds.forEach(VWGameProperties.getInstance()::addMind);
 	
@@ -62,12 +63,12 @@ public class Main {
 	    LogUtils.fakeLog(e);
 	    LogUtils.log(VWGameProperties.MINDS_FILE + " was not found.");
 	    
-	    return null;
+	    return Collections.emptyList();
 	}
 	catch(Exception e) {
 	    LogUtils.fakeLog(e);
 	    
-	    return null;
+	    return Collections.emptyList();
 	}
     }
 

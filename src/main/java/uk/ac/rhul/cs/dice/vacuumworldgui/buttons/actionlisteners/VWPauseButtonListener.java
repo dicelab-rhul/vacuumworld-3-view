@@ -9,9 +9,9 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWSaveButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWStopButton;
 
 public class VWPauseButtonListener extends VWAbstractButtonListener {
-    public VWPauseButton pauseButton;
-    public VWStopButton stopButton;
-    public VWSaveButton saveButton;
+    private VWPauseButton pauseButton;
+    private VWStopButton stopButton;
+    private VWSaveButton saveButton;
     
     public VWPauseButtonListener(Component parent) {
 	super(parent);
@@ -44,5 +44,17 @@ public class VWPauseButtonListener extends VWAbstractButtonListener {
     
     public void setSaveButton(VWSaveButton saveButton) {
 	this.saveButton = saveButton;
+    }
+    
+    public VWPauseButton getPauseButton() {
+	return this.pauseButton;
+    }
+    
+    public VWSaveButton getSaveButton() {
+	return this.saveButton;
+    }
+    
+    public VWStopButton getStopButton() {
+	return this.stopButton;
     }
 }

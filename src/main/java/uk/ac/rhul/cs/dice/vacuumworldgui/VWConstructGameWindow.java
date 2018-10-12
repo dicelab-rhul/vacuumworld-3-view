@@ -7,35 +7,30 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWButtonsPanel;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWConstructGridPanel;
 
 public class VWConstructGameWindow {
-    private JFrame window;
-    private BorderLayout layout;
     
     public VWConstructGameWindow() {
 	buildWindow();
     }
 
     private void buildWindow() {
-	this.window = new JFrame();
-	this.window.setTitle("Please, position the actors and the pieces of dirt.");
+	JFrame window = new JFrame();
+	window.setTitle("Please, position the actors and the pieces of dirt.");
+	window.setLayout(new BorderLayout());
 	
-	this.layout = new BorderLayout();
+	VWConstructGridPanel grid = new VWConstructGridPanel(window, VWGameProperties.getInstance().getGridSize());
 	
-	this.window.setLayout(this.layout);
-	
-	VWConstructGridPanel grid = new VWConstructGridPanel(this.window, VWGameProperties.getInstance().getGridSize());
-	
-	VWButtonsPanel buttonsPanel = new VWButtonsPanel(this.window);
+	VWButtonsPanel buttonsPanel = new VWButtonsPanel(window);
 	buttonsPanel.generatePanelForConstructGameWindow(grid.getState());
 	
-	this.window.add(buttonsPanel.getPanel(), BorderLayout.SOUTH);
-	this.window.add(grid.getGrid(), BorderLayout.CENTER);
+	window.add(buttonsPanel.getPanel(), BorderLayout.SOUTH);
+	window.add(grid.getGrid(), BorderLayout.CENTER);
 	
-	this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
-	this.window.pack();
-	this.window.repaint();
-	this.window.revalidate();
-	this.window.setLocationRelativeTo(null);
-	this.window.setVisible(true);
+	window.pack();
+	window.repaint();
+	window.revalidate();
+	window.setLocationRelativeTo(null);
+	window.setVisible(true);
     }
 }

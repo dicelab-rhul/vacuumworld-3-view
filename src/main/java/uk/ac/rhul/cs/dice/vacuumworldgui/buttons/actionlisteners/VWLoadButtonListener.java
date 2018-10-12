@@ -28,7 +28,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 	if(e.getSource() instanceof JButton) {
-	    System.out.println("Clicked on Load!!!");
+	    LogUtils.log("Clicked on Load!!!");
 	    int val = loadState();
 	    
 	    loadGame(val);
@@ -44,7 +44,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	    attemptToLoadTheGame(file);
 	}
 	else {
-	    System.out.println("No file selected.");
+	    LogUtils.log("No file selected.");
 	}
     }
 
@@ -54,7 +54,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	    VWState.reset();
 	    this.state = VWState.getInstance(path);
 	    
-	    System.out.println("Loaded " + path + ".");
+	    LogUtils.log("Loaded " + path + ".");
 	    
 	    getParent().invalidate();
 	    ((JFrame) getParent()).dispose();
@@ -65,7 +65,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	}
 	catch(Exception e) {
 	    LogUtils.fakeLog(e);
-	    System.out.println("Failed to load the state.");
+	    LogUtils.log("Failed to load the state.");
 	}
     }
     

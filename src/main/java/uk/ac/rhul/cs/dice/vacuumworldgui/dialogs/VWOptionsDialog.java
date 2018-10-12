@@ -12,6 +12,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWOptionsOKButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWMindSelectedListener;
@@ -89,7 +91,7 @@ public class VWOptionsDialog extends VWAbstractDialog {
 	    
 	    VWGameProperties.getInstance(source.getValue());
 	    
-	    System.out.println("Grid size changed: now " + VWGameProperties.getInstance().getGridSize() + ".");
+	    LogUtils.log("Grid size changed: now " + VWGameProperties.getInstance().getGridSize() + ".");
 	}
     }
  }

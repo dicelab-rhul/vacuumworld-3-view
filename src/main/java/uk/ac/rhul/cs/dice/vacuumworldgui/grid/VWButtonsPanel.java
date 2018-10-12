@@ -36,8 +36,9 @@ public class VWButtonsPanel {
 	VWDummyButton b2 = new VWDummyButton("Stop", this.parent);
 	b2.createButton();
 	
-	VWDummyButton b3 = new VWDummyButton("Save", this.parent);
+	VWSaveButton b3 = new VWSaveButton(this.parent, state);
 	b3.createButton();
+	b3.setEnabled();
 	
 	this.panel.add(b.getButton());
 	this.panel.add(b2.getButton());

@@ -12,16 +12,26 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWStartSimulati
 public class VWSwingWorker extends SwingWorker<Void, Void> {
     private VWStartSimulationButtonListener firstListener;
     private VWLoadButtonListener secondListener;
-    
+    private volatile boolean stop;
     
     public VWSwingWorker(VWStartSimulationButtonListener listener) {
 	this.firstListener = listener;
+	this.stop = false;
     }
     
     public VWSwingWorker(VWLoadButtonListener listener) {
 	this.secondListener = listener;
+	this.stop = false;
     }
 
+    public void setStop() {
+	this.stop = true;
+    }
+    
+    public void removeStop() {
+	this.stop = false;
+    }
+    
     @Override
     protected Void doInBackground() {
 	if(this.firstListener != null) {
@@ -35,7 +45,7 @@ public class VWSwingWorker extends SwingWorker<Void, Void> {
     }
 
     private void loopOnFirstListener() {
-	while (true) {
+	while (!this.stop) {
 	    LogUtils.log("View here: waiting for an update from the controller!");
 	    JSONObject state = this.firstListener.waitForModel();
 	    LogUtils.log("View here: received an update from the controller!");
@@ -58,7 +68,7 @@ public class VWSwingWorker extends SwingWorker<Void, Void> {
     }
 
     private void loopOnSecondListener() {
-	while (true) {
+	while (!this.stop) {
 	    LogUtils.log("View here: waiting for an update from the controller!");
 	    JSONObject state = this.secondListener.waitForModel();
 	    LogUtils.log("View here: received an update from the controller!");

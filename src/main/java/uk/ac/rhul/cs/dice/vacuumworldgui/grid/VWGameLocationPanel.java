@@ -19,11 +19,13 @@ public class VWGameLocationPanel {
     private JPanel locationPanel;
     private GridBagConstraints constraints;
     private Component parent;
+    private VWState state;
 
     public VWGameLocationPanel(Component parent, VWState state, String filePath, int x, int y) {
 	this.locationPanel = new JPanel();
 	this.locationPanel.setLayout(new GridLayout());
 	this.parent = parent;
+	this.state = state;
 	
 	this.constraints = new GridBagConstraints();
 	this.constraints.gridx = x;
@@ -52,5 +54,9 @@ public class VWGameLocationPanel {
     
     public GridBagConstraints getConstraints() {
 	return this.constraints;
+    }
+    
+    public VWState getState() {
+	return this.state;
     }
 }

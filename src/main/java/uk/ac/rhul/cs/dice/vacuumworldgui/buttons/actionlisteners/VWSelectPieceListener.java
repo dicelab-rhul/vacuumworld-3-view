@@ -6,6 +6,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JDialog;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
@@ -23,27 +25,38 @@ public class VWSelectPieceListener implements MouseListener {
     }
 
     private void updateState() {	
-	if(tryingToAddAnActor()) {
-	    System.out.println("Trying to an actor on location " + this.coordinates + "...");
-	    attemptToAddAnActor();
+	if(tryingToAddAnAgent()) {
+	    LogUtils.log("Trying to an agent on location " + this.coordinates + "...");
+	    attemptToAddAnAgent();
+	}
+	else if(tryingToAddAUser()) {
+	    LogUtils.log("Trying to an agent on location " + this.coordinates + "...");
+	    attemptToAddAUser();
 	}
 	else if(tryingToAddADirt()) {
-	    System.out.println("Trying to add a piece of dirt on location " + this.coordinates + "...");
+	    LogUtils.log("Trying to add a piece of dirt on location " + this.coordinates + "...");
 	    attemptToAddADirt();
 	}
 	else {
-	    System.out.println("Resetting location " + this.coordinates + "...");
+	    LogUtils.log("Resetting location " + this.coordinates + "...");
 	    this.state.resetLocation(this.coordinates);
 	}
 	
 	this.state.getCallback().update();
     }
 
-    private boolean tryingToAddAnActor() {
+    private boolean tryingToAddAUser() {
 	String[] tokens = this.imgPath.split("/");
 	String name = tokens[tokens.length - 1].split("\\.")[0];
 	
-	return !name.startsWith("white_square") && !name.contains("dirt");
+	return name.contains("user");
+    }
+
+    private boolean tryingToAddAnAgent() {
+	String[] tokens = this.imgPath.split("/");
+	String name = tokens[tokens.length - 1].split("\\.")[0];
+	
+	return !name.startsWith("white_square") && !name.contains("dirt") && !name.contains("user");
     }
 
     private boolean tryingToAddADirt() {
@@ -55,12 +68,12 @@ public class VWSelectPieceListener implements MouseListener {
 
     private void attemptToAddADirt() {
 	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
-	    System.out.println("Nope! A piece of dirt already exists on location "  + this.coordinates + ".");
+	    LogUtils.log("Nope! A piece of dirt already exists on location "  + this.coordinates + ".");
 	    
 	    return;
 	}
 	
-	System.out.println("Adding a piece of dirt on location "  + this.coordinates + ".");
+	LogUtils.log("Adding a piece of dirt on location "  + this.coordinates + ".");
 	
 	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
 	    this.state.addDirtToLocationWithActorFromView(this.coordinates, this.imgPath);
@@ -70,14 +83,31 @@ public class VWSelectPieceListener implements MouseListener {
 	}
     }
 
-    private void attemptToAddAnActor() {
+    private void attemptToAddAnAgent() {
 	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
-	    System.out.println("Nope! An actor already exists on location "  + this.coordinates + ".");
+	    LogUtils.log("Nope! An actor already exists on location "  + this.coordinates + ".");
 	    
 	    return;
 	}
 	
-	System.out.println("Adding an actor on location "  + this.coordinates + ".");
+	LogUtils.log("Adding an agent on location "  + this.coordinates + ".");
+	
+	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
+	    this.state.addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
+	}
+	else {
+	    this.state.addActorToEmptyLocationFromView(this.coordinates, this.imgPath);
+	}
+    }
+    
+    private void attemptToAddAUser() {
+	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
+	    LogUtils.log("Nope! An actor already exists on location "  + this.coordinates + ".");
+	    
+	    return;
+	}
+	
+	LogUtils.log("Adding a user on location "  + this.coordinates + ".");
 	
 	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
 	    this.state.addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
@@ -96,25 +126,21 @@ public class VWSelectPieceListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-	// TODO Auto-generated method stub
-
+	// useless
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-	// TODO Auto-generated method stub
-
+	// useless
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-	// TODO Auto-generated method stub
-
+	// useless
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-	// TODO Auto-generated method stub
-
+	// useless
     }
 }

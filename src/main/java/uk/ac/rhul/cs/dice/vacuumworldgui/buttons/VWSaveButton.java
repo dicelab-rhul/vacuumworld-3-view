@@ -24,4 +24,8 @@ public class VWSaveButton extends VWAbstractButton {
 	this.constraints.gridy = 0;
 	this.constraints.anchor = GridBagConstraints.CENTER;
     }
+    
+    public void setEnabled() {
+	getButton().setEnabled(true);
+    }
 }
