@@ -24,11 +24,11 @@ public class VWSaveResultDialog extends VWAbstractDialog {
 	super.createDialog();
 
 	String result = createResultString();
-	JLabel creditsLabel = new JLabel(result, SwingConstants.CENTER);
+	JLabel resultLabel = new JLabel(result, SwingConstants.CENTER);
 	JButton okButton = createOkButton();
 	
 	this.dialog.setLayout(new GridLayout(2, 1));
-	this.dialog.add(creditsLabel, 0);
+	this.dialog.add(resultLabel, 0);
 	this.dialog.add(okButton, 1);
 	this.dialog.setMinimumSize(new Dimension(400, 100));
 	
