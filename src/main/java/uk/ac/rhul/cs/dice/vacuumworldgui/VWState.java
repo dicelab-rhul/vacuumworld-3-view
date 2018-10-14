@@ -458,7 +458,7 @@ public class VWState {
     }
 
     private String getImgPath(String type, String color, String orientation) {
-	StringBuilder builder = new StringBuilder("/res/imgs/locations/");
+	StringBuilder builder = new StringBuilder("/imgs/locations/");
 	
 	switch(type) {
 	case VWJSON.CLEANING_AGENT:
@@ -493,7 +493,7 @@ public class VWState {
 	dirt.setType(VWJSON.DIRT);
 	String color = d.getString(VWJSON.DIRT_COLOR); //guaranteed to be a String for dirts.
 	dirt.setColor(color);
-	dirt.setImgPath("/res/imgs/locations/" + color + "_dirt.png");
+	dirt.setImgPath("/imgs/locations/" + color + "_dirt.png");
 	
 	return dirt;
     }
