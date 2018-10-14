@@ -67,7 +67,7 @@ public class Main {
 	    return Collections.emptyList();
 	}
 	catch(Exception e) {
-	    LogUtils.log(e);
+	    LogUtils.fakeLog(e);
 	    
 	    return Collections.emptyList();
 	}

@@ -34,9 +34,7 @@ public class VWWelcomeWindow {
 	JPanel welcomePanel = new JPanel();
 	JLabel welcomeLabel = new JLabel();
 	
-	LogUtils.log("View here: before...");
-	welcomeLabel.setIcon(new ImageIcon(ImageIO.read(Main.class.getResourceAsStream("/res/imgs/start_menu.png"))));
-	LogUtils.log("View here: after...");
+	welcomeLabel.setIcon(new ImageIcon(ImageIO.read(Main.class.getResourceAsStream("/imgs/start_menu.png"))));
 	
 	VWNewGameButton startButton = new VWNewGameButton(welcomeWindowFrame);
 	startButton.createButton();
