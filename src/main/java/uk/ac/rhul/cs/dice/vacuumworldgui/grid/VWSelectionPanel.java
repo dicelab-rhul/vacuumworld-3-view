@@ -56,13 +56,13 @@ public class VWSelectionPanel implements VWGridPanel {
     private VWSelectionDialogLocationPanel getGreenAgentPanel(VWState state, Coordinates coordinates, int j) {
 	switch(j) {
 	case 0:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/green_north.png", 0, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/green_north.png", 0, j);
 	case 1:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/green_south.png", 0, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/green_south.png", 0, j);
 	case 2:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/green_east.png", 0, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/green_east.png", 0, j);
 	case 3:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/green_west.png", 0, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/green_west.png", 0, j);
 	default:
 	    throw new IllegalArgumentException();
 	}
@@ -71,13 +71,13 @@ public class VWSelectionPanel implements VWGridPanel {
     private VWSelectionDialogLocationPanel getOrangeAgentPanel(VWState state, Coordinates coordinates, int j) {
 	switch(j) {
 	case 0:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/orange_north.png", 1, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/orange_north.png", 1, j);
 	case 1:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/orange_south.png", 1, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/orange_south.png", 1, j);
 	case 2:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/orange_east.png", 1, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/orange_east.png", 1, j);
 	case 3:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/orange_west.png", 1, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/orange_west.png", 1, j);
 	default:
 	    throw new IllegalArgumentException();
 	}
@@ -86,13 +86,13 @@ public class VWSelectionPanel implements VWGridPanel {
     private VWSelectionDialogLocationPanel getWhiteAgentPanel(VWState state, Coordinates coordinates, int j) {
 	switch(j) {
 	case 0:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_north.png", 2, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/white_north.png", 2, j);
 	case 1:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_south.png", 2, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/white_south.png", 2, j);
 	case 2:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_east.png", 2, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/white_east.png", 2, j);
 	case 3:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_west.png", 2, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/white_west.png", 2, j);
 	default:
 	    throw new IllegalArgumentException();
 	}
@@ -101,13 +101,13 @@ public class VWSelectionPanel implements VWGridPanel {
     private VWSelectionDialogLocationPanel getOtherPanel(VWState state, Coordinates coordinates, int j) {
 	switch(j) {
 	case 0:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/green_dirt.png", 3, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/green_dirt.png", 3, j);
 	case 1:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/orange_dirt.png", 3, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/orange_dirt.png", 3, j);
 	case 2:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/user_north.png", 3, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/user_north.png", 3, j);
 	case 3:
-	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/res/imgs/locations/white_square.png", 3, j);
+	    return new VWSelectionDialogLocationPanel(this.parent, state, coordinates, "/imgs/locations/white_square.png", 3, j);
 	default:
 	    throw new IllegalArgumentException();
 	}
