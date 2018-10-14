@@ -85,7 +85,7 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>vw3model</finalName>
+							<finalName>vw3gui</finalName>
 							<appendAssemblyId>false</appendAssemblyId>
 							<archive>
 								<manifest>
