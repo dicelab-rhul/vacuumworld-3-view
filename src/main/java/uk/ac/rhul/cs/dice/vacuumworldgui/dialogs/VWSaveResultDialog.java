@@ -35,14 +35,6 @@ public class VWSaveResultDialog extends VWAbstractDialog {
 	super.positionAndDisplay();
     }
 
-    private JButton createOkButton() {
-	JButton button = new JButton("OK");
-	
-	button.addActionListener(e -> getDialog().dispose());
-	
-	return button;
-    }
-
     private String createResultString() {
 	if (!this.saved) {
 	    return "The state has not been saved, as it is an illegal state.";

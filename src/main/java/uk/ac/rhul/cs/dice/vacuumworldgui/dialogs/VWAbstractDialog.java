@@ -3,6 +3,7 @@ package uk.ac.rhul.cs.dice.vacuumworldgui.dialogs;
 import java.awt.Component;
 import java.awt.Frame;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 
 public abstract class VWAbstractDialog implements VWDialog {
@@ -42,5 +43,14 @@ public abstract class VWAbstractDialog implements VWDialog {
     @Override
     public Component getParent() {
         return this.parent;
+    }
+    
+    @Override
+    public JButton createOkButton() {
+	JButton button = new JButton("OK");
+	
+	button.addActionListener(e -> getDialog().dispose());
+	
+	return button;
     }
 }

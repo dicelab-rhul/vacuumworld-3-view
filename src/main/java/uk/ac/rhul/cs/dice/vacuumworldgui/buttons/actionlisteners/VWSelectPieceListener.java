@@ -10,12 +10,15 @@ import org.cloudstrife9999.logutilities.LogUtils;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
+import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWIllegalStateDialog;
 
 public class VWSelectPieceListener implements MouseListener {
     private Component parent;
     private volatile VWState state;
     private Coordinates coordinates;
-    private String imgPath; 
+    private String imgPath;
+    private static final String ERROR_TAG_ACTOR = "Nope! An actor already exists on location ";
+    private static final String ERROR_TAG_DIRT = "Nope! A piece of dirt already exists on location ";
     
     public VWSelectPieceListener(Component parent, VWState state, Coordinates coordinates, String imgPath) {
 	this.parent = parent;
@@ -30,7 +33,7 @@ public class VWSelectPieceListener implements MouseListener {
 	    attemptToAddAnAgent();
 	}
 	else if(tryingToAddAUser()) {
-	    LogUtils.log("Trying to an agent on location " + this.coordinates + "...");
+	    LogUtils.log("Trying to an user on location " + this.coordinates + "...");
 	    attemptToAddAUser();
 	}
 	else if(tryingToAddADirt()) {
@@ -68,7 +71,9 @@ public class VWSelectPieceListener implements MouseListener {
 
     private void attemptToAddADirt() {
 	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
-	    LogUtils.log("Nope! A piece of dirt already exists on location "  + this.coordinates + ".");
+	    LogUtils.log(ERROR_TAG_DIRT  + this.coordinates + ".");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent, ERROR_TAG_DIRT  + this.coordinates + ".");
+	    dialog.createDialog();
 	    
 	    return;
 	}
@@ -85,7 +90,9 @@ public class VWSelectPieceListener implements MouseListener {
 
     private void attemptToAddAnAgent() {
 	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
-	    LogUtils.log("Nope! An actor already exists on location "  + this.coordinates + ".");
+	    LogUtils.log(ERROR_TAG_ACTOR  + this.coordinates + ".");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent, ERROR_TAG_ACTOR  + this.coordinates + ".");
+	    dialog.createDialog();
 	    
 	    return;
 	}
@@ -102,7 +109,9 @@ public class VWSelectPieceListener implements MouseListener {
     
     private void attemptToAddAUser() {
 	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
-	    LogUtils.log("Nope! An actor already exists on location "  + this.coordinates + ".");
+	    LogUtils.log(ERROR_TAG_ACTOR  + this.coordinates + ".");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent, ERROR_TAG_ACTOR  + this.coordinates + ".");
+	    dialog.createDialog();
 	    
 	    return;
 	}

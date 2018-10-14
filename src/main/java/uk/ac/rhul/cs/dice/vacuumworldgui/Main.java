@@ -92,12 +92,12 @@ public class Main {
 	    LogUtils.fakeLog(e);
 	    LogUtils.log(CONFIG_FILE_PATH + " was not found.");
 	    
-	    return new String[] {null, null, null};
+	    return new String[] {null, null};
 	}
 	catch(Exception e) {
 	    LogUtils.fakeLog(e);
 	    
-	    return new String[] {null, null, null};
+	    return new String[] {null, null};
 	}
     }
     

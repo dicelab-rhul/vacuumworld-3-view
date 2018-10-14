@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameWindow;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
+import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWIllegalStateDialog;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWSwingWorker;
 
 public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
@@ -40,6 +41,8 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
 	}
 	else {
 	    LogUtils.log("Illegal initial state: not starting the simulation!");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(getParent(), "Illegal initial state: not starting the simulation!");
+	    dialog.createDialog();
 	}
     }
     

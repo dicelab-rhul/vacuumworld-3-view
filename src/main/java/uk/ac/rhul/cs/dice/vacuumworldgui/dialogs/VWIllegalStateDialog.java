@@ -1,8 +1,10 @@
 package uk.ac.rhul.cs.dice.vacuumworldgui.dialogs;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -20,10 +22,13 @@ public class VWIllegalStateDialog extends VWAbstractDialog {
 	super.createDialog();
 	
 	JLabel errorLabel = new JLabel(this.message, SwingConstants.CENTER);
+	JButton okButton = createOkButton();
 	
 	this.dialog.setLayout(new GridLayout(2, 1));
 	this.dialog.add(errorLabel, 0);
+	this.dialog.add(okButton, 1);
+	this.dialog.setMinimumSize(new Dimension(400, 100));
 	
-	//TDB
+	super.positionAndDisplay();
     }
 }
