@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.cloudstrife9999.logutilities.LogUtils;
+
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWCreditsButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWLoadButton;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.VWOptionsButton;
@@ -20,6 +22,7 @@ public class VWWelcomeWindow {
     private static final int HEIGHT = 545;
     
     public VWWelcomeWindow() throws IOException {
+	LogUtils.log("View here: building UI...");
 	buildWelcomeWindow();
     }
 
