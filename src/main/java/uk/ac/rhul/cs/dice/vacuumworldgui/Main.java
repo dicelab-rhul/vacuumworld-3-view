@@ -29,16 +29,16 @@ public class Main {
 	    LogUtils.log("Malformed or illegal details have been provided. Please edit " + CONFIG_FILE_PATH + " and retry.");
 	}
 	else {
-	    init(fromConfig[0], fromConfig[1], fromConfig[2]);
+	    init(fromConfig[0], fromConfig[1]);
 	}
     }
 
-    private static void init(String hostname, String port, String whiteLocationPath) throws IOException {
+    private static void init(String hostname, String port) throws IOException {
 	VWControllerManager manager = new VWControllerManager(hostname, Integer.valueOf(port));
 	manager.setupNetwork();
 	
 	VWGameProperties.getInstance().setManager(manager);
-	VWGameProperties.getInstance().setWhiteLocationPath(whiteLocationPath);
+	VWGameProperties.getInstance().setWhiteLocationPath("/imgs/locations/white_square.png");
 	
 	List<List<String>> minds = parseMindsFile();
 	List<String> agentMinds = minds == null ? Collections.emptyList() : minds.get(0);
@@ -86,7 +86,7 @@ public class Main {
 	    JSONTokener tokener = new JSONTokener(new FileInputStream(CONFIG_FILE_PATH));
 	    JSONObject root = new JSONObject(tokener);
 	    
-	    return new String[] {root.getString(VWJSON.CONTROLLER_HOSTNAME), root.getString(VWJSON.CONTROLLER_PORT), root.getString(VWJSON.WHITE_LOCATION_PATH)};
+	    return new String[] {root.getString(VWJSON.CONTROLLER_HOSTNAME), root.getString(VWJSON.CONTROLLER_PORT)};
 	}
 	catch(FileNotFoundException e) {
 	    LogUtils.fakeLog(e);
