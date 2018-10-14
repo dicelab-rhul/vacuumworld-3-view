@@ -72,7 +72,7 @@ public class VWSelectPieceListener implements MouseListener {
     private void attemptToAddADirt() {
 	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
 	    LogUtils.log(ERROR_TAG_DIRT  + this.coordinates + ".");
-	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent, ERROR_TAG_DIRT  + this.coordinates + ".");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_DIRT  + this.coordinates + ".");
 	    dialog.createDialog();
 	    
 	    return;
@@ -91,7 +91,7 @@ public class VWSelectPieceListener implements MouseListener {
     private void attemptToAddAnAgent() {
 	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
 	    LogUtils.log(ERROR_TAG_ACTOR  + this.coordinates + ".");
-	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent, ERROR_TAG_ACTOR  + this.coordinates + ".");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_ACTOR  + this.coordinates + ".");
 	    dialog.createDialog();
 	    
 	    return;
@@ -110,7 +110,7 @@ public class VWSelectPieceListener implements MouseListener {
     private void attemptToAddAUser() {
 	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
 	    LogUtils.log(ERROR_TAG_ACTOR  + this.coordinates + ".");
-	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent, ERROR_TAG_ACTOR  + this.coordinates + ".");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_ACTOR  + this.coordinates + ".");
 	    dialog.createDialog();
 	    
 	    return;
