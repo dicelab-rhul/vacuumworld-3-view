@@ -31,6 +31,8 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
 	}
 	else {
 	    LogUtils.log("Not starting: not enough actors!");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(getParent(), "Not starting: not enough actors!");
+	    dialog.createDialog();
 	}
     }
 
