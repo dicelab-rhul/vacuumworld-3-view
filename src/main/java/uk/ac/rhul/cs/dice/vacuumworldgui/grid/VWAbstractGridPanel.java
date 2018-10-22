@@ -11,21 +11,17 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 public abstract class VWAbstractGridPanel implements VWGridPanel {
     private Component parent;
     private int gridSize;
-    private volatile VWState state;
     private GridBagLayout layout;
     private JPanel grid;
     
-    public VWAbstractGridPanel(Component parent, int gridSize, VWState state) {
+    public VWAbstractGridPanel(Component parent, int gridSize) {
+	VWState.getInstance(gridSize);
+	
 	this.parent = parent;
 	this.gridSize = gridSize;
-	this.state = state;
 	
 	this.layout = new GridBagLayout();
 	this.grid = new JPanel(this.layout);
-    }
-    
-    public VWAbstractGridPanel(Component parent, int gridSize) {
-	this(parent, gridSize, VWState.getInstance(gridSize));
     }
     
     public void displayGrid() {
@@ -46,10 +42,6 @@ public abstract class VWAbstractGridPanel implements VWGridPanel {
 
     public int getGridSize() {
         return this.gridSize;
-    }
-
-    public VWState getState() {
-        return this.state;
     }
 
     public GridBagLayout getLayout() {

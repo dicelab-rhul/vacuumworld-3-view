@@ -6,22 +6,19 @@ import java.awt.event.MouseEvent;
 import org.cloudstrife9999.logutilities.LogUtils;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
-import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWSelectionDialog;
 
 public class VWToggleLocationListener extends VWAbstractToggleLocationListener {
-    private volatile VWState state;
     private Coordinates coordinates;
     
-    public VWToggleLocationListener(Component parent, VWState state, Coordinates coordinates) {
+    public VWToggleLocationListener(Component parent, Coordinates coordinates) {
 	super(parent);
 	
-	this.state = state;
 	this.coordinates = coordinates;
     }
 
     private void createAndShowSelectionDialog() {
-	VWSelectionDialog dialog = new VWSelectionDialog(getParent(), this.state, this.coordinates);
+	VWSelectionDialog dialog = new VWSelectionDialog(getParent(), this.coordinates);
 	dialog.createDialog();
     }
 

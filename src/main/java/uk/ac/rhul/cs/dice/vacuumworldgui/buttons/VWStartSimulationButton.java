@@ -4,13 +4,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
-import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWStartSimulationButtonListener;
 
 public class VWStartSimulationButton extends VWAbstractButton {
 
-    public VWStartSimulationButton(Component parent, VWState state) {
-	super("Start", new VWStartSimulationButtonListener(parent, state), parent);
+    public VWStartSimulationButton(Component parent) {
+	super("Start", new VWStartSimulationButtonListener(parent), parent);
     }
     
     @Override

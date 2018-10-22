@@ -15,18 +15,15 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWIllegalStateDialog;
 import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWSwingWorker;
 
 public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
-    private volatile VWState state;
     private VWGameWindow gameWindow;
     
-    public VWStartSimulationButtonListener(Component parent, VWState state) {
+    public VWStartSimulationButtonListener(Component parent) {
 	super(parent);
-	
-	this.state = state;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if(this.state.areThereAnyActors()) {
+	if(VWState.getExistingInstance().areThereAnyActors()) {
 	    checkAndStartSimulation();
 	}
 	else {
@@ -49,7 +46,7 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
     }
     
     private void startSimulation() {
-	this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
+	this.gameWindow = new VWGameWindow();
 	
 	getParent().setVisible(false);
 	getParent().invalidate();
@@ -67,9 +64,8 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
 
     public void redrawGUI(JSONObject state) {
 	VWState.reset(state);
-	this.state = VWState.getInstance(state);
 	LogUtils.log("View here: redrawing the grid...");
-	this.gameWindow.reset(this.state, this.state.getGridSize());
+	this.gameWindow.reset(VWState.getExistingInstance().getGridSize());
 	LogUtils.log("Done!");
     }
 
@@ -79,7 +75,7 @@ public class VWStartSimulationButtonListener extends VWAbstractButtonListener {
 
     private void sendStateToModel() {
 	LogUtils.log("View here: sending initial state to the controller...");
-	VWGameProperties.getInstance().getManager().sendStateToModel(this.state.serializeState());
+	VWGameProperties.getInstance().getManager().sendStateToModel(VWState.getExistingInstance().serializeState());
 	LogUtils.log("Done!");
     }
 }

@@ -7,15 +7,15 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWGameGridPanel extends VWAbstractGridPanel {
 
-    public VWGameGridPanel(Component parent, int gridSize, VWState state) {
-	super(parent, gridSize, state);
+    public VWGameGridPanel(Component parent, int gridSize) {
+	super(parent, gridSize);
 	
 	for(int i = 0; i < getGridSize(); i++) {
 	    for(int j = 0; j < getGridSize(); j++) {
 		Coordinates coordinates = new Coordinates(i, j);
-		String img = getState().getLocations().get(coordinates).getP1().getImgPath();
+		String img = VWState.getExistingInstance().getLocations().get(coordinates).getP1().getImgPath();
 		
-		VWGameLocationPanel panel = new VWGameLocationPanel(getParent(), getState(), img, i, j);
+		VWGameLocationPanel panel = new VWGameLocationPanel(getParent(), img, i, j);
 		
 		getGrid().add(panel.getLocationPanel(), panel.getConstraints());
 	    }

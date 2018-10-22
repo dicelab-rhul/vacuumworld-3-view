@@ -13,11 +13,13 @@ public class VWGameWindow {
     private JFrame window;
     private BorderLayout layout;
 
-    public VWGameWindow(VWState state, int gridSize) {
-	buildWindow(state, gridSize);
+    public VWGameWindow() {
+	buildWindow();
     }
     
-    private void buildWindow(VWState state, int gridSize) {
+    private void buildWindow() {
+	int gridSize = VWState.getExistingInstance().getGridSize();
+	
 	this.window = new JFrame();
 	this.window.setTitle("Welcome to the grid!");
 	
@@ -25,10 +27,10 @@ public class VWGameWindow {
 	
 	this.window.setLayout(this.layout);
 	
-	VWGameGridPanel grid = new VWGameGridPanel(this.window, gridSize, state);
+	VWGameGridPanel grid = new VWGameGridPanel(this.window, gridSize);
 	
 	VWButtonsPanel buttonsPanel = new VWButtonsPanel(this.window);
-	buttonsPanel.generatePanelForGameWindow(state);
+	buttonsPanel.generatePanelForGameWindow();
 	
 	this.window.add(buttonsPanel.getPanel(), BorderLayout.SOUTH);
 	this.window.add(grid.getGrid(), BorderLayout.CENTER);
@@ -41,11 +43,11 @@ public class VWGameWindow {
 	this.window.setLocationRelativeTo(null);
 	this.window.setVisible(true);
 	
-	LogUtils.log(state.serializeState().toString());
+	LogUtils.log(VWState.getExistingInstance().serializeState().toString());
     }
     
-    public void reset(VWState state, int gridSize) {
-	VWGameGridPanel grid = new VWGameGridPanel(this.window, gridSize, state);
+    public void reset(int gridSize) {
+	VWGameGridPanel grid = new VWGameGridPanel(this.window, gridSize);
 	
 	this.window.remove(this.layout.getLayoutComponent(BorderLayout.CENTER));
 	this.window.add(grid.getGrid(), BorderLayout.CENTER);

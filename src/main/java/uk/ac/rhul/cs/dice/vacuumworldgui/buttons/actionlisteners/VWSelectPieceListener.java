@@ -14,15 +14,14 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWIllegalStateDialog;
 
 public class VWSelectPieceListener implements MouseListener {
     private Component parent;
-    private volatile VWState state;
     private Coordinates coordinates;
     private String imgPath;
     private static final String ERROR_TAG_ACTOR = "Nope! An actor already exists on location ";
     private static final String ERROR_TAG_DIRT = "Nope! A piece of dirt already exists on location ";
+    private static final String ERROR_TAG_USER = "Nope! A user already exists on location ";
     
-    public VWSelectPieceListener(Component parent, VWState state, Coordinates coordinates, String imgPath) {
+    public VWSelectPieceListener(Component parent, Coordinates coordinates, String imgPath) {
 	this.parent = parent;
-	this.state = state;
 	this.coordinates = coordinates;
 	this.imgPath = imgPath;
     }
@@ -42,10 +41,10 @@ public class VWSelectPieceListener implements MouseListener {
 	}
 	else {
 	    LogUtils.log("Resetting location " + this.coordinates + "...");
-	    this.state.resetLocation(this.coordinates);
+	    VWState.getExistingInstance().resetLocation(this.coordinates);
 	}
 	
-	this.state.getCallback().update();
+	VWState.getExistingInstance().getCallback().update();
     }
 
     private boolean tryingToAddAUser() {
@@ -70,7 +69,7 @@ public class VWSelectPieceListener implements MouseListener {
     }
 
     private void attemptToAddADirt() {
-	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
+	if(VWState.getExistingInstance().getLocations().get(this.coordinates).doesADirtExist()) {
 	    LogUtils.log(ERROR_TAG_DIRT  + this.coordinates + ".");
 	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_DIRT  + this.coordinates + ".");
 	    dialog.createDialog();
@@ -80,16 +79,16 @@ public class VWSelectPieceListener implements MouseListener {
 	
 	LogUtils.log("Adding a piece of dirt on location "  + this.coordinates + ".");
 	
-	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
-	    this.state.addDirtToLocationWithActorFromView(this.coordinates, this.imgPath);
+	if(VWState.getExistingInstance().getLocations().get(this.coordinates).doesAnActorExist()) {
+	    VWState.getExistingInstance().addDirtToLocationWithActorFromView(this.coordinates, this.imgPath);
 	}
 	else {
-	    this.state.addDirtToEmptyLocationFromView(this.coordinates, this.imgPath);
+	    VWState.getExistingInstance().addDirtToEmptyLocationFromView(this.coordinates, this.imgPath);
 	}
     }
 
     private void attemptToAddAnAgent() {
-	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
+	if(VWState.getExistingInstance().getLocations().get(this.coordinates).doesAnActorExist()) {
 	    LogUtils.log(ERROR_TAG_ACTOR  + this.coordinates + ".");
 	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_ACTOR  + this.coordinates + ".");
 	    dialog.createDialog();
@@ -99,30 +98,38 @@ public class VWSelectPieceListener implements MouseListener {
 	
 	LogUtils.log("Adding an agent on location "  + this.coordinates + ".");
 	
-	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
-	    this.state.addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
+	if(VWState.getExistingInstance().getLocations().get(this.coordinates).doesADirtExist()) {
+	    VWState.getExistingInstance().addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
 	}
 	else {
-	    this.state.addActorToEmptyLocationFromView(this.coordinates, this.imgPath);
+	    VWState.getExistingInstance().addActorToEmptyLocationFromView(this.coordinates, this.imgPath);
 	}
     }
     
     private void attemptToAddAUser() {
-	if(this.state.getLocations().get(this.coordinates).doesAnActorExist()) {
+	if(VWState.getExistingInstance().getLocations().get(this.coordinates).doesAnActorExist()) {
 	    LogUtils.log(ERROR_TAG_ACTOR  + this.coordinates + ".");
 	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_ACTOR  + this.coordinates + ".");
 	    dialog.createDialog();
-	    
-	    return;
 	}
-	
-	LogUtils.log("Adding a user on location "  + this.coordinates + ".");
-	
-	if(this.state.getLocations().get(this.coordinates).doesADirtExist()) {
-	    this.state.addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
+	else if(VWState.getExistingInstance().isAUserPresent()) {
+	    LogUtils.log(ERROR_TAG_USER  + VWState.getExistingInstance().getUserCoordinates() + ". Only one user per grid is allowed.");
+	    VWIllegalStateDialog dialog = new VWIllegalStateDialog(this.parent.getParent(), ERROR_TAG_USER  + this.coordinates + ". Only one user per grid is allowed.");
+	    dialog.createDialog();
 	}
 	else {
-	    this.state.addActorToEmptyLocationFromView(this.coordinates, this.imgPath);
+	    addUser();
+	}
+    }
+
+    private void addUser() {
+	LogUtils.log("Adding a user on location "  + this.coordinates + ".");
+	
+	if(VWState.getExistingInstance().getLocations().get(this.coordinates).doesADirtExist()) {
+	    VWState.getExistingInstance().addActorToLocationWithDirtFromView(this.coordinates, this.imgPath);
+	}
+	else {
+	    VWState.getExistingInstance().addActorToEmptyLocationFromView(this.coordinates, this.imgPath);
 	}
     }
 

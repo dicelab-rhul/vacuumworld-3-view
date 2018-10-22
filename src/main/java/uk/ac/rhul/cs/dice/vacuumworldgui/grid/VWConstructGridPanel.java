@@ -4,19 +4,20 @@ import java.awt.Component;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
+import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 
 public class VWConstructGridPanel extends VWAbstractGridPanel {
     
     public VWConstructGridPanel(Component parent, int gridSize) {
 	super(parent, gridSize);
 	
-	getState().setCallback(this);
+	VWState.getExistingInstance().setCallback(this);
 	
 	for(int i = 0; i < getGridSize(); i++) {
 	    for(int j = 0; j < getGridSize(); j++) {
 		Coordinates coordinates = new Coordinates(i, j);
-		getState().addEmptyLocationFromView(coordinates);
-		VWLocationPanel panel = new VWLocationPanel(getParent(), getState(), VWGameProperties.getInstance().getWhiteLocationPath(), i, j);
+		VWState.getExistingInstance().addEmptyLocationFromView(coordinates);
+		VWLocationPanel panel = new VWLocationPanel(getParent(), VWGameProperties.getInstance().getWhiteLocationPath(), i, j);
 		
 		getGrid().add(panel.getLocationPanel(), panel.getConstraints());
 	    }
@@ -25,14 +26,14 @@ public class VWConstructGridPanel extends VWAbstractGridPanel {
 	displayGrid();
     }
     
-    public void update() {	
+    public void update() {
 	getGrid().removeAll();
 	
 	for(int i = 0; i < getGridSize(); i++) {
 	    for(int j = 0; j < getGridSize(); j++) {
 		Coordinates coordinates = new Coordinates(i, j);
-		String img = getState().getLocations().get(coordinates).getP1().getImgPath();
-		VWLocationPanel panel = new VWLocationPanel(getParent(), getState(), img, i, j);
+		String img = VWState.getExistingInstance().getLocations().get(coordinates).getP1().getImgPath();
+		VWLocationPanel panel = new VWLocationPanel(getParent(), img, i, j);
 		
 		getGrid().add(panel.getLocationPanel(), panel.getConstraints());
 	    }

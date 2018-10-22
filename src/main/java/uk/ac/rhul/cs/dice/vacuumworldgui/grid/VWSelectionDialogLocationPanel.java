@@ -14,7 +14,6 @@ import org.cloudstrife9999.logutilities.LogUtils;
 
 import uk.ac.rhul.cs.dice.vacuumworldgui.Coordinates;
 import uk.ac.rhul.cs.dice.vacuumworldgui.Main;
-import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWSelectPieceListener;
 
 public class VWSelectionDialogLocationPanel {
@@ -22,7 +21,7 @@ public class VWSelectionDialogLocationPanel {
     private GridBagConstraints constraints;
     private Component parent;
     
-    public VWSelectionDialogLocationPanel(Component parent, VWState state, Coordinates coordinates, String filePath, int x, int y) {
+    public VWSelectionDialogLocationPanel(Component parent, Coordinates coordinates, String filePath, int x, int y) {
 	this.locationPanel = new JPanel();
 	this.locationPanel.setLayout(new GridLayout());
 	this.parent = parent;
@@ -41,7 +40,7 @@ public class VWSelectionDialogLocationPanel {
 	    LogUtils.log(e);
 	}
 	
-	label.addMouseListener(new VWSelectPieceListener(this.parent, state, coordinates, filePath));
+	label.addMouseListener(new VWSelectPieceListener(this.parent, coordinates, filePath));
 	
 	this.locationPanel.add(label);
     }

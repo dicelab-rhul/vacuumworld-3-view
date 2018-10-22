@@ -20,7 +20,7 @@ public class VWConstructGameWindow {
 	VWConstructGridPanel grid = new VWConstructGridPanel(window, VWGameProperties.getInstance().getGridSize());
 	
 	VWButtonsPanel buttonsPanel = new VWButtonsPanel(window);
-	buttonsPanel.generatePanelForConstructGameWindow(grid.getState());
+	buttonsPanel.generatePanelForConstructGameWindow();
 	
 	window.add(buttonsPanel.getPanel(), BorderLayout.SOUTH);
 	window.add(grid.getGrid(), BorderLayout.CENTER);

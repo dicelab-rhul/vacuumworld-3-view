@@ -4,13 +4,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
-import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWSaveButtonListener;
 
 public class VWSaveButton extends VWAbstractButton {
 
-    public VWSaveButton(Component parent, VWState state) {
-	super("Save", new VWSaveButtonListener(parent, state), parent);
+    public VWSaveButton(Component parent) {
+	super("Save", new VWSaveButtonListener(parent), parent);
     }
     
     @Override

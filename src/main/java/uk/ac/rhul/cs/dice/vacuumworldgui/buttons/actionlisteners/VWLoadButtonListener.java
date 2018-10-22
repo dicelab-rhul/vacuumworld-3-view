@@ -18,7 +18,6 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.grid.VWSwingWorker;
 
 public class VWLoadButtonListener extends VWAbstractButtonListener {
     private JFileChooser loader;
-    private volatile VWState state;
     private VWGameWindow gameWindow;
     
     public VWLoadButtonListener(Component parent) {
@@ -52,13 +51,13 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	try {
 	    String path = file.getAbsolutePath();
 	    VWState.reset();
-	    this.state = VWState.getInstance(path);
+	    VWState.getInstance(path);
 	    
 	    LogUtils.log("Loaded " + path + ".");
 	    
 	    getParent().invalidate();
 	    ((JFrame) getParent()).dispose();
-	    this.gameWindow = new VWGameWindow(this.state, this.state.getGridSize());
+	    this.gameWindow = new VWGameWindow();
 	    
 	    sendStateToModel();
 	    loop();
@@ -75,9 +74,9 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 
     public void redrawGUI(JSONObject state) {
 	VWState.reset(state);
-	this.state = VWState.getInstance(state);
+	VWState.getInstance(state);
 	LogUtils.log("View here: redrawing the grid...");
-	this.gameWindow.reset(this.state, this.state.getGridSize());
+	this.gameWindow.reset(VWState.getExistingInstance().getGridSize());
 	LogUtils.log("Done!");
     }
 
@@ -87,7 +86,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 
     private void sendStateToModel() {
 	LogUtils.log("View here: sending initial state to the controller...");
-	VWGameProperties.getInstance().getManager().sendStateToModel(this.state.serializeState());
+	VWGameProperties.getInstance().getManager().sendStateToModel(VWState.getExistingInstance().serializeState());
 	LogUtils.log("Done!");
     }
 

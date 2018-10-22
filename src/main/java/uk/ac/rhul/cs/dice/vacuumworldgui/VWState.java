@@ -23,12 +23,15 @@ public class VWState {
     private Map<Coordinates, VWIncrementalLocation> locations;
     private VWConstructGridPanel callback;
     private int numberOfActors;
+    private boolean userPresent;
+    private Coordinates userCoordinates;
     
     //constructor "from view for model through controller.".
     private VWState(int size) {
 	this.locations = new HashMap<>();
 	this.size = size;
 	this.numberOfActors = 0;
+	this.userPresent = false;
     }
     
     //constructor "from model through controller for view".
@@ -38,8 +41,18 @@ public class VWState {
 	
 	extractSize(state);
 	deserialize(state);
+	refreshUserFlag();
     }
-    
+
+    /**
+     * 
+     * Call this to construct an empty grid. Do not call this if you just want to access the existing instance. Call {@link VWState#getExistingInstance()} instead. 
+     * 
+     * @param size the grid size.
+     * 
+     * @return the state.
+     * 
+     */
     public static VWState getInstance(int size) {
 	if(VWState.instance == null) {
 	    VWState.instance = new VWState(size);
@@ -48,6 +61,15 @@ public class VWState {
 	return VWState.instance;
     }
     
+    /**
+     * 
+     * Call this to reconstruct the state from a {@link JSONObject} representation. Do not call this if you just want to access the existing instance. Call {@link VWState#getExistingInstance()} instead. 
+     * 
+     * @param state a {@link JSONObject} representation of the state.
+     * 
+     * @return the state.
+     * 
+     */
     public static VWState getInstance(JSONObject state) {
 	if(VWState.instance == null) {
 	    VWState.instance = new VWState(state);
@@ -56,6 +78,17 @@ public class VWState {
 	return VWState.instance;
     }
     
+    /**
+     * 
+     * Call this to reconstruct the state from the path of a save-state file. Do not call this if you just want to access the existing instance. Call {@link VWState#getExistingInstance()} instead. 
+     * 
+     * @param savestatePath the path to a save-state file.
+     * 
+     * @throws IllegalArgumentException if any error happens while loading the save-state, or if the save-state does not exist.
+     * 
+     * @return the state.
+     * 
+     */
     public static VWState getInstance(String savestatePath) {
 	try {
 	    if(VWState.instance == null) {
@@ -72,8 +105,45 @@ public class VWState {
 	}
     }
     
+    /**
+     * 
+     * Returns the existing instance of the state, or <code>null</code>, if such instance does not exist.
+     * 
+     * @return the existing instance of the state, or <code>null</code>, if such instance does not exist.
+     * 
+     */
     public static VWState getExistingInstance() {
 	return VWState.instance;
+    }
+    
+    public void refreshUserFlag() {
+	if(this.locations == null || this.locations.isEmpty()) {
+	    unsetUserFlagAndCoordinates();
+	}
+	else {
+	    VWIncrementalLocation candidate = this.locations.entrySet().stream().filter(e -> e.getValue().doesAUserExist()).map(Map.Entry::getValue).findFirst().orElse(null);
+	    
+	    this.userPresent = candidate != null && candidate.doesAUserExist();
+	    this.userCoordinates = this.userPresent ? candidate.getCoordinates() : null;
+	}
+    }
+    
+    public void setUserFlagAndCoordinates(Coordinates userCoordinates) {
+	this.userPresent = true;
+	this.userCoordinates = userCoordinates;
+    }
+    
+    public void unsetUserFlagAndCoordinates() {
+	this.userPresent = false;
+	this.userCoordinates = null;
+    }
+    
+    public boolean isAUserPresent() {
+	return this.userPresent;
+    }
+    
+    public Coordinates getUserCoordinates() {
+	return this.userCoordinates;
     }
     
     public boolean isAValidInitialState() {
@@ -145,6 +215,10 @@ public class VWState {
 	    this.numberOfActors--;
 	}
 	
+	if(this.locations.get(coordinates).doesAUserExist()) {
+	    unsetUserFlagAndCoordinates();
+	}
+	
 	addEmptyLocationFromView(coordinates);
     }
     
@@ -172,6 +246,9 @@ public class VWState {
 	
 	if(!imagePath.contains(VWJSON.USER)) {
 	    this.numberOfActors++;
+	}
+	else {
+	    setUserFlagAndCoordinates(coordinates);
 	}
     }
 
@@ -255,6 +332,9 @@ public class VWState {
 	
 	if(!imagePath.contains(VWJSON.USER)) {
 	    this.numberOfActors++;
+	}
+	else {
+	    setUserFlagAndCoordinates(coordinates);
 	}
     }
     

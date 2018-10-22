@@ -10,12 +10,9 @@ import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
 import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWSaveResultDialog;
 
 public class VWSaveButtonListener extends VWAbstractButtonListener {
-    private volatile VWState state;
 
-    public VWSaveButtonListener(Component parent, VWState state) {
+    public VWSaveButtonListener(Component parent) {
 	super(parent);
-	
-	this.state = state;
     }
 
     @Override
@@ -48,9 +45,5 @@ public class VWSaveButtonListener extends VWAbstractButtonListener {
     private void popResultDialog(boolean saved, String path) {
 	VWSaveResultDialog dialog = new VWSaveResultDialog(getParent(), saved, path);
 	dialog.createDialog();
-    }
-
-    public VWState getState() {
-	return this.state;
     }
 }
