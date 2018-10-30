@@ -60,7 +60,7 @@ public class VWControllerManager {
     
     public JSONObject fetchUpdateFromModel() {
 	try {
-	    this.fromController.accept(VacuumWorldMessage.class, VWAbstractMessage.class, VWMessage.class);
+	    this.fromController.accept(VacuumWorldMessage.class, VWAbstractMessage.class, VWMessage.class, VWMessageCodes.class);
 	    VacuumWorldMessage message = (VacuumWorldMessage) this.fromController.readObject();
 	    
 	    return message.getContent();
@@ -140,7 +140,7 @@ public class VWControllerManager {
 
     private VacuumWorldMessage receiveMessage() {
 	try {
-	    this.fromController.accept(VacuumWorldMessage.class, VWAbstractMessage.class, VWMessage.class);
+	    this.fromController.accept(VacuumWorldMessage.class, VWAbstractMessage.class, VWMessage.class, VWMessageCodes.class);
 	    
 	    return (VacuumWorldMessage) this.fromController.readObject();
 	}
