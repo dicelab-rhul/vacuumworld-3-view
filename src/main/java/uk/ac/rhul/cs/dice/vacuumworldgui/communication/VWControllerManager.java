@@ -9,6 +9,8 @@ import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONObject;
 
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWAbstractMessage;
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWMessage;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWMessageCodes;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldMessage;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldRuntimeException;
@@ -58,7 +60,7 @@ public class VWControllerManager {
     
     public JSONObject fetchUpdateFromModel() {
 	try {
-	    this.fromController.accept(VacuumWorldMessage.class);
+	    this.fromController.accept(VacuumWorldMessage.class, VWAbstractMessage.class, VWMessage.class);
 	    VacuumWorldMessage message = (VacuumWorldMessage) this.fromController.readObject();
 	    
 	    return message.getContent();
@@ -138,7 +140,7 @@ public class VWControllerManager {
 
     private VacuumWorldMessage receiveMessage() {
 	try {
-	    this.fromController.accept(VacuumWorldMessage.class);
+	    this.fromController.accept(VacuumWorldMessage.class, VWAbstractMessage.class, VWMessage.class);
 	    
 	    return (VacuumWorldMessage) this.fromController.readObject();
 	}
