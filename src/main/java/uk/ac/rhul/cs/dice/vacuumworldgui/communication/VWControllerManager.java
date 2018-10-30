@@ -1,11 +1,11 @@
 package uk.ac.rhul.cs.dice.vacuumworldgui.communication;
 
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONObject;
 
@@ -17,7 +17,7 @@ public class VWControllerManager {
     private Socket socketWithController;
     private InputStream from;
     private OutputStream to;
-    private ObjectInputStream fromController;
+    private ValidatingObjectInputStream fromController;
     private ObjectOutputStream toController;
     private VacuumWorldMessage latest;
 
@@ -29,7 +29,7 @@ public class VWControllerManager {
 	    this.to = this.socketWithController.getOutputStream();
 	    this.from = this.socketWithController.getInputStream();
 	    this.toController = new ObjectOutputStream(this.to);
-	    this.fromController = new ObjectInputStream(this.from);
+	    this.fromController = new ValidatingObjectInputStream(this.from);
 	    
 	    LogUtils.log("View here: connected to the controller at " + controllerIp + ":" + controllerPort + ".");
 	}
