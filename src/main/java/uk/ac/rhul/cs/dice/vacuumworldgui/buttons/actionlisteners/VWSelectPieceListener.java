@@ -142,21 +142,21 @@ public class VWSelectPieceListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-	// useless
+	// VWSelectPieceListerer does not need to override this.
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-	// useless
+	// VWSelectPieceListerer does not need to override this.
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-	// useless
+	// VWSelectPieceListerer does not need to override this.
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-	// useless
+	// VWSelectPieceListerer does not need to override this.
     }
 }

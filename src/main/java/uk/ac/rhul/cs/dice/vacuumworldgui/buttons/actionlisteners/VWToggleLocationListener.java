@@ -30,21 +30,21 @@ public class VWToggleLocationListener extends VWAbstractToggleLocationListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-	// useless
+	// VWToggleLocationListerer does not need to override this.
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-	// useless
+	// VWToggleLocationListerer does not need to override this.
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-	// useless
+	// VWToggleLocationListerer does not need to override this.
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-	// useless
+	// VWToggleLocationListerer does not need to override this.
     }
 }
