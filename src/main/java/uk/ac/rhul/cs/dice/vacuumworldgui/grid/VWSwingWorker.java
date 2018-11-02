@@ -1,13 +1,17 @@
 package uk.ac.rhul.cs.dice.vacuumworldgui.grid;
 
+import java.awt.Component;
+
 import javax.swing.SwingWorker;
 
 import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONObject;
 
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldCheckedException;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWLoadButtonListener;
 import uk.ac.rhul.cs.dice.vacuumworldgui.buttons.actionlisteners.VWStartSimulationButtonListener;
+import uk.ac.rhul.cs.dice.vacuumworldgui.dialogs.VWFatalErrorDialog;
 
 public class VWSwingWorker extends SwingWorker<Void, Void> {
     private VWStartSimulationButtonListener firstListener;
@@ -45,14 +49,27 @@ public class VWSwingWorker extends SwingWorker<Void, Void> {
     }
 
     private void loopOnFirstListener() {
-	while (!this.stop) {
-	    LogUtils.log("View here: waiting for an update from the controller!");
-	    JSONObject state = this.firstListener.waitForModel();
-	    LogUtils.log("View here: received an update from the controller!");
-	    this.firstListener.redrawGUI(state);
-	    checkForPause();
-	    VWGameProperties.getInstance().getManager().sendAcknowledgementToModel();
+	try {
+	    while (!this.stop) {
+		LogUtils.log("View here: waiting for an update from the controller!");
+		JSONObject state = this.firstListener.waitForModel();
+		LogUtils.log("View here: received an update from the controller!");
+		this.firstListener.redrawGUI(state);
+		checkForPause();
+		VWGameProperties.getInstance().getManager().sendAcknowledgementToModel();
+	    }	    
 	}
+	catch(VacuumWorldCheckedException e) {
+	    stopSystem();
+	}
+    }
+
+    private void stopSystem() {
+	LogUtils.log("View here: creating error dialog.");
+	Component parent = this.firstListener == null ? this.secondListener.getParent() : this.firstListener.getParent();
+	VWFatalErrorDialog dialog = new VWFatalErrorDialog(parent);
+	
+	dialog.createDialog();
     }
 
     private void checkForPause() {
@@ -68,13 +85,18 @@ public class VWSwingWorker extends SwingWorker<Void, Void> {
     }
 
     private void loopOnSecondListener() {
-	while (!this.stop) {
-	    LogUtils.log("View here: waiting for an update from the controller!");
-	    JSONObject state = this.secondListener.waitForModel();
-	    LogUtils.log("View here: received an update from the controller!");
-	    this.secondListener.redrawGUI(state);
-	    checkForPause();
-	    VWGameProperties.getInstance().getManager().sendAcknowledgementToModel();
+	try {
+	    while (!this.stop) {
+		LogUtils.log("View here: waiting for an update from the controller!");
+		JSONObject state = this.secondListener.waitForModel();
+		LogUtils.log("View here: received an update from the controller!");
+		this.secondListener.redrawGUI(state);
+		checkForPause();
+		VWGameProperties.getInstance().getManager().sendAcknowledgementToModel();
+	    }    
+	}
+	catch(VacuumWorldCheckedException e) {
+	    stopSystem();
 	}
     }
 }

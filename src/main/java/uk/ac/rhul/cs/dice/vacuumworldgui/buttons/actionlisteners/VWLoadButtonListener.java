@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import org.cloudstrife9999.logutilities.LogUtils;
 import org.json.JSONObject;
 
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldCheckedException;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameProperties;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWGameWindow;
 import uk.ac.rhul.cs.dice.vacuumworldgui.VWState;
@@ -80,7 +81,7 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	LogUtils.log("Done!");
     }
 
-    public JSONObject waitForModel() {
+    public JSONObject waitForModel() throws VacuumWorldCheckedException {
 	return VWGameProperties.getInstance().getManager().fetchUpdateFromModel();
     }
 

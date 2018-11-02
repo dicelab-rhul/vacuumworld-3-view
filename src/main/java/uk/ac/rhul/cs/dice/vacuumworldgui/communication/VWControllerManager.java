@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWHandshakeWhitelister;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VWMessageCodes;
+import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldCheckedException;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldMessage;
 import uk.ac.rhul.cs.dice.vacuumworld.vwcommon.VacuumWorldRuntimeException;
 
@@ -57,12 +58,17 @@ public class VWControllerManager {
 	sendMessage(message);
     }
     
-    public JSONObject fetchUpdateFromModel() {
+    public JSONObject fetchUpdateFromModel() throws VacuumWorldCheckedException {
 	try {
 	    VWHandshakeWhitelister.whitelistHandshakeClasses(this.fromController);
-	    VacuumWorldMessage message = (VacuumWorldMessage) this.fromController.readObject();
+	    this.latest = (VacuumWorldMessage) this.fromController.readObject();
 	    
-	    return message.getContent();
+	    parseMessageType(VWMessageCodes.UPDATE_FROM_MODEL);
+	    
+	    return this.latest.getContent();
+	}
+	catch(VacuumWorldRuntimeException e) {
+	    throw new VacuumWorldCheckedException("The system crashed.");
 	}
 	catch(Exception e) {
 	    throw new IllegalArgumentException(e);
@@ -95,7 +101,12 @@ public class VWControllerManager {
     private void parseMessageType(VWMessageCodes expected) {
 	VWMessageCodes receivedCode = this.latest.getCode();
 	
-	if(!expected.equals(receivedCode)) {
+	if(VWMessageCodes.FATAL_ERROR.equals(receivedCode)) {
+	    LogUtils.log("View here: received " + receivedCode + " from the controller. As such, the simulation cannot continue.");
+	    
+	    throw new VacuumWorldRuntimeException();
+	}
+	else if(!expected.equals(receivedCode)) {
 	    throw new IllegalArgumentException("Expected" + expected + ", got " + receivedCode + " instead.");
 	}
 	else {
