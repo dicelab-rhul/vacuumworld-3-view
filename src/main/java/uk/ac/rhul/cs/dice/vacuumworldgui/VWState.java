@@ -93,10 +93,13 @@ public class VWState {
 	try {
 	    if(VWState.instance == null) {
 		//The triple '/' after 'file' (rather than 2), and the .replace() are needed on Windows.
-		URI uri = new URI("file:///" + savestatePath.replace("\\", "/"));
+		String qualPath = "file:///" + savestatePath.replace("\\", "/");
+		URI uri = new URI(qualPath);
 		JSONTokener tokener = new JSONTokener(uri.toURL().openStream());
 		JSONObject root = new JSONObject(tokener);
 		VWState.instance = new VWState(root);
+		
+		LogUtils.log("Loaded " + qualPath + ".");
 	    }
 	    
 	    return VWState.instance;

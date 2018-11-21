@@ -54,8 +54,6 @@ public class VWLoadButtonListener extends VWAbstractButtonListener {
 	    VWState.reset();
 	    VWState.getInstance(path);
 	    
-	    LogUtils.log("Loaded " + path + ".");
-	    
 	    getParent().invalidate();
 	    ((JFrame) getParent()).dispose();
 	    this.gameWindow = new VWGameWindow();
