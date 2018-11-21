@@ -92,7 +92,8 @@ public class VWState {
     public static VWState getInstance(String savestatePath) {
 	try {
 	    if(VWState.instance == null) {
-		URI uri = new URI("file://" + savestatePath);
+		//The triple '/' after 'file' (rather than 2), and the .replace() are needed on Windows.
+		URI uri = new URI("file:///" + savestatePath.replace("\\", "/"));
 		JSONTokener tokener = new JSONTokener(uri.toURL().openStream());
 		JSONObject root = new JSONObject(tokener);
 		VWState.instance = new VWState(root);
